@@ -105,6 +105,5 @@ parfor i = 2:length(subDir)
     end
 end
 
-%% TractProfile
+%%
 
-TP = AFQ_CreateTractProfile;
