@@ -2,7 +2,7 @@
 %% difine argument
 [homeDir,subDir] = Tama_subj;
 
-parfor i = 2:length(subDir)
+for i = 2:length(subDir)
     %% load files
     % whole brain connectome
     wholebrainfgPath =fullfile(homeDir,subDir{i},...
