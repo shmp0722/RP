@@ -2,7 +2,7 @@
 %% difine argument
 [homeDir,subDir] = Tama_subj;
 
-for i = 2:length(subDir)
+parfor i = 2:length(subDir)
     %% load files
     % whole brain connectome
     wholebrainfgPath =fullfile(homeDir,subDir{i},...
@@ -105,5 +105,6 @@ for i = 2:length(subDir)
     end
 end
 
-%%
+%% TractProfile
 
+TP = AFQ_CreateTractProfile;
