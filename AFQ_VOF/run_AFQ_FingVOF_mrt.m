@@ -2,7 +2,45 @@
 %% difine argument
 [homeDir,subDir] = Tama_subj;
 
-parfor i = 2:length(subDir)
+%% Check who is not done
+
+id = ones(1,length(subDir));
+
+for i = 1:length(subDir)
+    %% load files
+    % whole brain connectome
+    wholebrainfgPath =fullfile(homeDir,subDir{i},...
+        '/dwi_2nd/fibers/life_mrtrix/dwi2nd_aligned_trilin_csd_lmax2_dwi2nd_aligned_trilin_brainmask_dwi2nd_aligned_trilin_wm_prob-500000.pdb');
+    
+    % transform WB.pdb to WB.mat
+    %         [a,b,c]=fileparts(wholebrainfgPath);
+    %         cd(a)
+    
+    % pick undone subject up
+    if ~exist(wholebrainfgPath);
+        sprintf('Subject-%d %s does not have WBC',i,subDir{i})
+        id(1,i) = 0;
+    end;
+    
+end
+
+%% Whole brain connectome
+ for i =find(id==0);
+    % set directory    
+    SubDir = fullfile(homeDir,subDir{i});
+    fgDir  = fullfile(SubDir,'/dwi_2nd/fibers/life_mrtrix');
+    dtDir  = fullfile(SubDir,'dwi_2nd');
+    
+    % load dt6 file
+    dt  = fullfile(dtDir,'dt6.mat');
+     
+    % whole brain connectome 
+    [status, results, fg, pathstr] = SO_feTrack('prob',dt,fgDir,2,500000,[]);
+ end
+
+%%
+% parfor i = 2:length(subDir)
+for i =find(id==0);
     %% load files
     % whole brain connectome
     wholebrainfgPath =fullfile(homeDir,subDir{i},...
@@ -38,7 +76,7 @@ parfor i = 2:length(subDir)
         Atlas=[];
         antsInvWarp = 0;
         useRoiBasedApproach=[4 0];
-        useInterhemisphericSplit=true;        
+        useInterhemisphericSplit=true;
         
         [fg_classified,fg_unclassified,classification,fg] = ...
             AFQ_SegmentFiberGroups(dt, WB, Atlas, ...

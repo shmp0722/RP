@@ -50,7 +50,7 @@ subDir = { ...
 %     'JMD-Ctl-FN-20130621-DWI'
 %     'JMD-Ctl-AM-20130726-DWI'
 %     'JMD-Ctl-SO-20130726-DWI'
-    'RP1-TT-2013-11-01'
+%     'RP1-TT-2013-11-01'
     'RP2-KI-2013-11-01'
     'RP3-TO-13120611-DWI'
     'LHON6-SS-20131206-DWI'

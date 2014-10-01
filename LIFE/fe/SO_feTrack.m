@@ -32,14 +32,14 @@ fprintf('\n\n[%s] Performing whole-brain tractograpy ...\n\n',mfilename);
 for il = 1:length(lmax)
   % This first step initializes all the files necessary for mrtrix.
   % This can take a long time.
-  files           = mrtrix_init(dtFile, lmax(il),fibersFolder,wmMask);
+  files           = mrtrix_init_RP(dtFile, lmax(il),fibersFolder,wmMask);
   
   % MRTRIX - We run this first because it is fast.
   for ii = 1:length(trackingAlgorithm)
     % Track and save fibers using mrtrix
 %       [status, results, fg, pathstr] = mrtrix_track(files, files.brainmask, files.wm, switchAlgo(trackingAlgorithm{ii}), nSeeds, runInBackground, verbose);
 
-    [status, results, fg, pathstr] = mrtrix_track(files, files.brainmask, files.wm, 'prob', nSeeds, runInBackground, verbose);
+    [status, results, fg, pathstr] = mrtrix_track_RP(files, files.brainmask, files.wm, 'prob', nSeeds, runInBackground, verbose);
   end
 end
 
