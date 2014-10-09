@@ -2,33 +2,7 @@ function runAFQonMySubjects_6LHON_8RD_6normal_mrtrix
 % Run AFQ_run for these subjects
 % set directories
 
-AFQdata = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan';
-
-subs = {...
-    'JMD1-MM-20121025-DWI'
-    'JMD3-AK-20121026-DWI'
-    'JMD5-KK-20121220-DWI'
-    'JMD6-NO-20121220-DWI'
-    'JMD2-KK-20121025-DWI'
-    'JMD4-AM-20121026-DWI'
-    'JMD7-YN-20130621-DWI'
-    'JMD8-HT-20130621-DWI'
-    'JMD9-TY-20130621-DWI'
-    'LHON1-TK-20121130-DWI'
-    'LHON2-SO-20121130-DWI'
-    'LHON3-TO-20121130-DWI'
-    'LHON4-GK-20121130-DWI'
-    'LHON5-HS-20121220-DWI'
-    'LHON6-SS-20121221-DWI'
-    'JMD-Ctl-MT-20121025-DWI'
-    'JMD-Ctl-YM-20121025-DWI'
-    'JMD-Ctl-SY-20130222DWI'
-    'JMD-Ctl-HH-20120907DWI'
-%     'JMD-Ctl-HT-20120907-DWI'
-    'JMD-Ctl-FN-20130621-DWI'
-    'JMD-Ctl-AM-20130726-DWI'
-    'JMD-Ctl-SO-20130726-DWI'};
-
+[AFQdata, subs] = Tama_subj2;
 %% Make directory structure for each subject
 for ii = 1:length(subs)
     sub_dirs{ii} = fullfile(AFQdata, subs{ii},'dwi_2nd');
@@ -37,7 +11,10 @@ end
 % Subject grouping is a little bit funny because afq only takes two groups
 % but we have 3. For now we will divide it up this way but we can do more
 % later
-sub_group = [1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+a = ones(1,39);
+b = [16:23,31:33,35:37];
+a(1,b) = 0; 
+sub_group = a;
 % sub_group = [1,0];
 
 % Now create and afq structure

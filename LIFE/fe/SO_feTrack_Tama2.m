@@ -1,4 +1,4 @@
-function [status, results, fg, pathstr] = SO_feTrack(trackingAlgorithm, dtFile,fibersFolder,lmax,nSeeds,wmMask)
+function [status, results, fg, pathstr] = SO_feTrack_Tama2(trackingAlgorithm, dtFile,fibersFolder,lmax,nSeeds,wmMask)
 %
 % This function creates whole-brain white-matter connectome.
 %
