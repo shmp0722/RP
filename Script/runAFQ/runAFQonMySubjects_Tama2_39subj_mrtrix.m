@@ -35,4 +35,19 @@ afq.params.run_mode = 'mrtrix';
 %% Run AFQ on these subjects
 afq = AFQ_run(sub_dirs, sub_group, afq);
 
+%% add VOF to afq atructure
+% L_VOF
+fgName = 'L_VOF.pdb';
+roi1Name = afq.roi1names{1,19};
+roi2Name = afq.roi2names{1,19};
+afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
+
+% R_VOF
+fgName = 'R_VOF.pdb';
+roi1Name = afq.roi1names{1,20};
+roi2Name = afq.roi2names{1,20};
+afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
+
+
+
 

@@ -143,32 +143,33 @@
 % end
 
 %% Whole brain tractography using AFQ code
-[homeDir, subDir] = Tama_subj2;
-%% Make directory structure for each subject
-for ii = 1:length(subDir)
-    sub_dirs{ii} = fullfile(homeDir, subDir{ii},'dwi_2nd');
-end
-
-% Subject grouping is a little bit funny because afq only takes two groups
-% but we have 3. For now we will divide it up this way but we can do more
-% later
-a = ones(1,39);
-b = [16:23,31:33,35:37];
-a(1,b) = 0;
-sub_group = a;
-% sub_group = [1,0];
-
-% Now create and afq structure
-afq = AFQ_Create('sub_dirs', sub_dirs, 'sub_group', sub_group, 'clip2rois', 0);
-afq.params.run_mode = 'mrtrix';
-
-%% Run AFQ on these subjects
-afq = AFQ_run(sub_dirs, sub_group, afq);
+% %% Make directory structure for each subject
+% for ii = 1:length(subDir)
+%     sub_dirs{ii} = fullfile(homeDir, subDir{ii},'dwi_2nd');
+% end
+% 
+% % Subject grouping is a little bit funny because afq only takes two groups
+% % but we have 3. For now we will divide it up this way but we can do more
+% % later
+% a = ones(1,39);
+% b = [16:23,31:33,35:37];
+% a(1,b) = 0;
+% sub_group = a;
+% % sub_group = [1,0];
+% 
+% % Now create and afq structure
+% afq = AFQ_Create('sub_dirs', sub_dirs, 'sub_group', sub_group, 'clip2rois', 0);
+% afq.params.run_mode = 'mrtrix';
+% 
+% %% Run AFQ on these subjects
+% afq = AFQ_run(sub_dirs, sub_group, afq);
 %%
 % fg = AFQ_WholebrainTractography(dt,run_mode,params);
 
 %% Find VOF using WBFG
-for i =2:length(subDir);
+[homeDir, subDir] = Tama_subj2;
+
+for i =8:length(subDir);%7
     %% load files
     % whole brain connectome
     wholebrainfgPath =fullfile(homeDir,subDir{i},...
@@ -176,27 +177,20 @@ for i =2:length(subDir);
     
     if ~exist(wholebrainfgPath);
         display([subDir{i},'-- Has No Whole brain connectome']);
-    else
-        
-        
-        % transform WB.pdb to WB.mat
-        %         [a,b,c]=fileparts(wholebrainfgPath);
-        %         cd(a)
-        %         Pdb2mat(wholebrainfgPath);
-        %         wholebrainfgPath = [a,'/', b, '.mat'];
+    else    
         % dt and T1
         dt = fullfile(homeDir,subDir{i},'/dwi_2nd/dt6.mat');
         dt = dtiLoadDt6(dt);
         t1 = niftiRead(dt.files.t1);
-        %% take several ROI from fs segmentation file
+        %% ROIs from fs segmentation file
         fsROIdir = fullfile(homeDir,subDir{i},'/dwi_2nd/fsROIs');
-        if ~exist(fsROIdir); mkdir(fsROIdir);end
-        %
-        [homeDir2] = Tama_subj; fsDir = fullfile(homeDir2, 'freesurfer');
-        fsIn = fullfile(fsDir,subDir{i},'/mri/aparc+aseg.nii.gz');
-        type = 'mat';
-        fs_roisFromAllLabels(fsIn,fsROIdir,type,[])
-        
+        if ~exist(fsROIdir); mkdir(fsROIdir);
+            %
+            [homeDir2] = Tama_subj; fsDir = fullfile(homeDir2, 'freesurfer');
+            fsIn = fullfile(fsDir,subDir{i},'/mri/aparc+aseg.nii.gz');
+            type = 'mat';
+            fs_roisFromAllLabels(fsIn,fsROIdir,type,[])
+        end
         
         %% get L,R-arcuate from WB
         WB = fgRead(wholebrainfgPath);
@@ -206,26 +200,32 @@ for i =2:length(subDir);
         useRoiBasedApproach=[4 0];
         useInterhemisphericSplit=true;
         
+        % 
         [fg_classified,fg_unclassified,classification,fg] = ...
             AFQ_SegmentFiberGroups(dt, WB, Atlas, ...
             useRoiBasedApproach, useInterhemisphericSplit, antsInvWarp);
+        
+        % save classfied WB
+        outDir = fullfile(homeDir,subDir{i},'/dwi_2nd/VOF_AFQ');
+        if ~exist(outDir);mkdir(outDir);end;        
+
+        dtiWriteFiberGroup(fg_classified, fullfile(outDir,'WholeBrainFG_classfied'));
         
         L_arcuate =fg_classified(1,19);
         R_arcuate =fg_classified(1,20);
         
         % clean up arcuates
-        L_arcuate = AFQ_removeFiberOutliers(L_arcuate,3,3,25);
-        R_arcuate = AFQ_removeFiberOutliers(R_arcuate,3,3,25);
-        L_arcuate.name = [L_arcuate,'_D3_L3'];
-        L_arcuate.name = [L_arcuate,'_D3_L3'];
+        L_arcuate = AFQ_removeFiberOutliers(L_arcuate,3,3,100);       
+        L_arcuate.name = [L_arcuate.name,'_D3_L3'];
+        
+        R_arcuate = AFQ_removeFiberOutliers(R_arcuate,3,3,100);
+        R_arcuate.name = [R_arcuate.name,'_D3_L3'];
 
         %% AFQ_FindVOF
-        %
-        outdir  =   fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/WBC_mrtrix');
         thresh = [.95 .6];
         v_crit = 1.3;
         
-        [L_VOF, R_VOF, L_pArc, R_pArc, L_pArc_vot, R_pArc_vot] = AFQ_FindVOF(wholebrainfgPath,L_arcuate,R_arcuate,fsROIdir,outdir,thresh,v_crit, dt);
+        [L_VOF, R_VOF, L_pArc, R_pArc, L_pArc_vot, R_pArc_vot] = AFQ_FindVOF(wholebrainfgPath,L_arcuate,R_arcuate,fsROIdir,outDir,thresh,v_crit, dt);
         
 %         %% fiber check
 %         % VOF
@@ -255,34 +255,40 @@ for i =2:length(subDir);
 %         view(-11,32)
         
         %% Save 6 tracts
-        cd(a)
-        if ~exist('VOF_AFQ');mkdir('VOF_AFQ');end;
-        cd('VOF')
+        outDir2 = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers');
+        if ~exist(outDir);mkdir(outDir);end;
+        
         FG = {L_VOF, R_VOF, L_pArc, R_pArc, L_pArc_vot, R_pArc_vot};
         % save all tracts
         for k = 1: length(FG)
-            fgWrite(FG{k})
+            if k <= 2
+                    fgWrite(FG{k},fullfile(outDir,FG{k}.name),'pdb')
+                    fgWrite(FG{k},fullfile(outDir2,FG{k}.name),'mat')
+            else 
+                    fgWrite(FG{k},fullfile(outDir,FG{k}.name),'pdb')
+            end
         end
-        save fg_classified fg_classified
+        
         
     end
 end
 
 %% Load afq structure
 resultDir = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/results';
-load(fullfile('afq_39subjects.mat'));
+load(fullfile(resultDir,'afq_39subjects.mat'));
 
 %% add VOF to afq atructure
+% L_VOF
+fgName = 'L_VOF.pdb';
+roi1Name = afq.roi1names{1,19};
+roi2Name = afq.roi2names{1,19};
+afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
 
-% % R-optic radiation
-% fgName = 'ROR_MD3.pdb';
-% roi1Name = 'Rt-LGN.mat';
-% roi2Name = 'ctx-rh-pericalcarine.mat';
-% 
-% afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
-
-
-AFQ_AddNewFiberGroup(afq,)
+% R_VOF
+fgName = 'R_VOF.pdb';
+roi1Name = afq.roi1names{1,20};
+roi2Name = afq.roi2names{1,20};
+afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
 
 %% Figure 5A
 % indivisual FA value along optic tract

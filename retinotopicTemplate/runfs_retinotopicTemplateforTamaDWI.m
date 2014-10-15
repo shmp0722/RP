@@ -5,9 +5,7 @@ function runfs_retinotopicTemplateforTamaDWI
 % See; fs_retinotopicTemplate
 %
 
-[homeDir,subDir,JMD,CRD,LHON,Ctl,RP] = Tama_subj2;
-
-
+[homeDir,subDir] = Tama_subj2;
 %
 % %% Initializing the parallel toolbox
 % poolwasopen=1; % if a matlabpool was open already we do not open nor close one
