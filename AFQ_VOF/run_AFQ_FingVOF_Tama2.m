@@ -169,7 +169,7 @@
 %% Find VOF using WBFG
 [homeDir, subDir] = Tama_subj2;
 
-for i =1:length(subDir);
+for i =8:length(subDir);%7
     %% load files
     % whole brain connectome
     wholebrainfgPath =fullfile(homeDir,subDir{i},...
