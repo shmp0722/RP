@@ -14,18 +14,19 @@ if istrue(MakeEccROI);
     for i =1:length(MaxDegree)
         V1RoiCutEccentricity(MinDegree(i), MaxDegree(i))
     end
+    
+    %% copy ROI for generating fibers
+    % Eccentricity ROI
+    for i =1:length(subDir)
+        ROIfiles = fullfile(homeDir,subDir{i},'/fs_Retinotopy2/*.mat');
+        copyfile(ROIfiles,fullfile(homeDir,subDir{i},'/dwi_2nd/Eccentricity'))
+    end
+    % LGN ROI
+    for i =1:length(subDir)
+        ROIfiles = fullfile(homeDir,subDir{i},'/dwi_2nd/ROIs/*LGN4.mat');
+        copyfile(ROIfiles,fullfile(homeDir,subDir{i},'/dwi_2nd/Eccentricity'))
+    end
 else
-end
-%% copy ROI for contrac fiber generation
-% Eccentricity ROI
-for i =1:length(subDir)
-    ROIfiles = fullfile(homeDir,subDir{i},'/fs_Retinotopy2/*.mat');
-    copyfile(ROIfiles,fullfile(homeDir,subDir{i},'/dwi_2nd/Eccentricity'))
-end
-% LGN ROI
-for i =1:length(subDir)
-    ROIfiles = fullfile(homeDir,subDir{i},'/dwi_2nd/ROIs/*LGN4.mat');
-    copyfile(ROIfiles,fullfile(homeDir,subDir{i},'/dwi_2nd/Eccentricity'))
 end
 
 %% contrack OR generation
@@ -70,20 +71,19 @@ else
 end
 
 %% Check to see who is done
-    id_R = zeros(1,length(subDir)); id_L = zeros(1,length(subDir));
+id_R = zeros(1,length(subDir)); id_L = zeros(1,length(subDir));
 
 for i = 1:length(subDir) % 22
     fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack/V1eccentricity2');
     %         roiDir = fullfile(homeDir,subDir{i},'/dwi_2nd/ROIs');% should change
     %         dt6    = fullfile(homeDir,subDir{i},'/dwi_2nd/dt6.mat');
     %         dt6     = dtiLoadDt6(dt6);
-    cd(fgDir)
-    FG_R = dir('*Rt-LGN4*.pdb');
-    FG_L = dir('*Lt-LGN4*.pdb');
+    FG_R = dir(fullfile(fgDir,'*Rt-LGN4*.pdb'));
+    FG_L = dir(fullfile(fgDir,'*Lt-LGN4*.pdb'));
     
-    if length(FG_R)==5,
+    if length(FG_R)>=5,
         id_R(1,i)=1;end
-    if length(FG_L)==5,id_L(1,i)=1;end
+    if length(FG_L)>=5,id_L(1,i)=1;end
 end
 
 %% Clean up fibers
@@ -153,7 +153,7 @@ end
 % end
 
 
-%% dtiIntersectFibers
+%% Clean fibers
 if istrue(cleanfiber);
     for i = 1:length(subDir) % 22
         fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack',ctrParams.projectName);
@@ -162,67 +162,64 @@ if istrue(cleanfiber);
         dt6     = dtiLoadDt6(dt6);
         
         % ROI file names you want to merge
-        for hemisphere = 1:2
+%         for hemisphere = 1:2
             for r = 1:length(ctrParams.roi2)
                 % Intersect raw OR with Not ROIs
                 fgF = ['*',ctrParams.roi2{r},'*.pdb'];
-                %             '*_Lt-LGN4_lh_V1_smooth3mm_NOT_*.pdb'};
-                
+                            
                 % load fg
                 fg     = dir(fullfile(fgDir,fgF));
                 [~,ik] = sort(cat(2,fg.datenum),2,'ascend');
                 fg     = fg(ik);
-                fg     = fgRead(fullfile(fgDir,fg(1).name));
+                fg     = fgRead(fullfile(fgDir,fg(1).name));                
                 
-                
-                % Cut the fibers below the acpc plane, to disentangle CST & ATL crossing
-                % at the level of the pons
-                fgname  = fg.name;
-                fg      = dtiSplitInterhemisphericFibers(fg, dt6, -15);
-                fg.name = fgname;
+                %                 % Cut the fibers below the acpc plane, to disentangle CST & ATL crossing
+                %                 % at the level of the pons
+                %                 fgname  = fg.name;
+                %                 fg      = dtiSplitInterhemisphericFibers(fg, dt6, -15);
+                %                 fg.name = fgname;
                 
                 % exculde fibers based on wayppoint ROI
                 ROIname = {'Lh_NOT1201.mat','Rh_NOT1201.mat'};
-                ROIf = fullfile(roiDir, ROIname{hemisphere});
-                ROI = dtiReadRoi(ROIf);
-                
-                % dtiIntersectFibers using waypoint ROIs
-                [fgOut1,~, keep1, ~] = dtiIntersectFibersWithRoi([], 'not', [], ROI, fg);
-                
+                if r <=5,
+                    ROIf = fullfile(roiDir, ROIname{1});
+                else
+                    ROIf = fullfile(roiDir, ROIname{2});
+                end
+                ROI = dtiReadRoi(ROIf);                
+                [fgOut1,~, ~, ~] = dtiIntersectFibersWithRoi([], 'not', [], ROI, fg);
+                size(fgOut1.fibers)
                 % Remove outlier fibers
                 maxDist = 3;  maxLen = 3;   numNodes = 100;
                 M = 'mean';
                 count = 1;  show = 1;
-                [fgclean ,keep] =  AFQ_removeFiberOutliers(fgOut1,maxDist,maxLen,numNodes,M,count,show);
+                [fgclean ,~] =  AFQ_removeFiberOutliers(fgOut1,maxDist,maxLen,numNodes,M,count,show);
                 
-%                 % get diffusivities along the fiber
-%                 direction = 'AP'; Nodes = 100;
-%                 TractProfile{i,hemisphere,r} = SO_FiberValsInTractProfiles(fgclean,dt6,direction,Nodes,1);
-%                 % save new fg.pdb file
+                %                 % get diffusivities along the fiber
+                %                 direction = 'AP'; Nodes = 100;
+                %                 TractProfile{i,hemisphere,r} = SO_FiberValsInTractProfiles(fgclean,dt6,direction,Nodes,1);
+                %                 % save new fg.pdb file
                 savefilename = sprintf('%s_D%dL%d.pdb',fgclean.name,maxDist,maxLen);
                 fgWrite(fgclean,savefilename,'pdb');
             end
         end
-    end
+%     end
 else
 end
 return
 
 %% measure diffusion properties
-for i = 1:length(subDir) 
-    fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack/V1eccebtricity');
-%             fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack',ctrParams.projectName);
-
-    %     roiDir = fullfile(homeDir,sufor l = 1:5;%:length(ctrParams.roi2)       
-            plot(X, TractProfile{1,l,1}.vals.fa,'color',c(l,:),'linewidth',2)        
-    endbDir{i},'/dwi_2nd/ROIs');% should change
+for i = 1:length(subDir)
+    fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack',ctrParams.projectName);
+    %             fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack',ctrParams.projectName);    
+    %     roiDir = fullfile(homeDir,sufor l = 1:5;%:length(ctrParams.roi2)
     dt6    = fullfile(homeDir,subDir{i},'/dwi_2nd/dt6.mat');
     dt6    = dtiLoadDt6(dt6);
     direction ='AP';
     Nodes  = 100;
-    % 
+    %
     for l = 1:length(ctrParams.roi2)
-        fgF = ['*',ctrParams.roi2{l},'*Lh_NOT1201*.pdb'];        
+        fgF = ['*',ctrParams.roi2{l},'*Lh_NOT1201*.pdb'];
         FG     = dir(fullfile(fgDir,fgF));
         for m = 1:length(FG)
             fg = fgRead(FG(m).name);
@@ -236,10 +233,10 @@ figure; hold on;
 X = 1:100;
 c = jet(5);
 %
-    for l = 1:5;%:length(ctrParams.roi2)       
-            plot(X, TractProfile{1,l,1}.vals.fa,'color',c(l,:),'linewidth',2)        
-    end
- 
+for l = 1:5;%:length(ctrParams.roi2)
+    plot(X, TractProfile{1,l,1}.vals.fa,'color',c(l,:),'linewidth',2)
+end
+
 legend(ctrParams.roi2{1:5})
 
 
