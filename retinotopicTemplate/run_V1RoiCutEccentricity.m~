@@ -8,8 +8,8 @@ function run_V1RoiCutEccentricity(MakeEccROI,contrackgen,cleanfiber)
 %% eccentricity ROI
 % requirements fs_retinotopicmap
 if istrue(MakeEccROI);
-    MinDegree = [1,6,11,16,21];
-    MaxDegree = [5,10,15,20,30];
+    MinDegree = [1,6,11,16,21,31];
+    MaxDegree = [5,10,15,20,30,90];
     
     for i =1:length(MaxDegree)
         V1RoiCutEccentricity(MinDegree(i), MaxDegree(i))
@@ -42,14 +42,12 @@ ctrParams.logName = 'myConTrackLog';
 ctrParams.baseDir = homeDir;
 ctrParams.dtDir = 'dwi_2nd';
 ctrParams.roiDir = '/dwi_2nd/Eccentricity';
-ctrParams.subs ={ 'LHON5-HS-20121220-DWI'
-    'LHON6-SS-20121221-DWI'
-    'JMD-Ctl-MT-20121025-DWI'};
+ctrParams.subs =subDir;
 
-ctrParams.roi1 = {'Rt-LGN4','Rt-LGN4','Rt-LGN4','Rt-LGN4','Rt-LGN4',...
-    'Lt-LGN4','Lt-LGN4','Lt-LGN4','Lt-LGN4','Lt-LGN4'};
-ctrParams.roi2 = {'rh_Ecc1to5','rh_Ecc6to10','rh_Ecc11to15','rh_Ecc16to20','rh_Ecc21to30',...
-    'lh_Ecc1to5','lh_Ecc6to10','lh_Ecc11to15','lh_Ecc16to20','lh_Ecc21to30'};
+ctrParams.roi1 = {'Rt-LGN4','Rt-LGN4','Rt-LGN4','Rt-LGN4','Rt-LGN4','Rt-LGN4',...
+    'Lt-LGN4','Lt-LGN4','Lt-LGN4','Lt-LGN4','Lt-LGN4','Lt-LGN4'};
+ctrParams.roi2 = {'rh_Ecc1to5','rh_Ecc6to10','rh_Ecc11to15','rh_Ecc16to20','rh_Ecc21to30','rh_Ecc31to90'...
+    'lh_Ecc1to5','lh_Ecc6to10','lh_Ecc11to15','lh_Ecc16to20','lh_Ecc21to30','lh_Ecc31to90'};
 
 ctrParams.nSamples = 10000;
 ctrParams.maxNodes = 240;
@@ -158,53 +156,51 @@ if istrue(cleanfiber);
     for i = 1:length(subDir) % 22
         fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack',ctrParams.projectName);
         roiDir = fullfile(homeDir,subDir{i},'/dwi_2nd/ROIs');% should change
-        dt6    = fullfile(homeDir,subDir{i},'/dwi_2nd/dt6.mat');
-        dt6     = dtiLoadDt6(dt6);
+%         dt6    = fullfile(homeDir,subDir{i},'/dwi_2nd/dt6.mat');
+%         dt6     = dtiLoadDt6(dt6);
         
         % ROI file names you want to merge
-%         for hemisphere = 1:2
-            for r = 1:length(ctrParams.roi2)
-                % Intersect raw OR with Not ROIs
-                fgF = ['*',ctrParams.roi2{r},'*.pdb'];
-                            
-                % load fg
-                fg     = dir(fullfile(fgDir,fgF));
-                [~,ik] = sort(cat(2,fg.datenum),2,'ascend');
-                fg     = fg(ik);
-                fg     = fgRead(fullfile(fgDir,fg(1).name));
-                
-                
-                %                 % Cut the fibers below the acpc plane, to disentangle CST & ATL crossing
-                %                 % at the level of the pons
-                %                 fgname  = fg.name;
-                %                 fg      = dtiSplitInterhemisphericFibers(fg, dt6, -15);
-                %                 fg.name = fgname;
-                
-                % exculde fibers based on wayppoint ROI
-                ROIname = {'Lh_NOT1201.mat','Rh_NOT1201.mat'};
-                if r <=5,
-                    ROIf = fullfile(roiDir, ROIname{1});
-                else
-                    ROIf = fullfile(roiDir, ROIname{2});
-                end
-                ROI = dtiReadRoi(ROIf);                
-                [fgOut1,~, ~, ~] = dtiIntersectFibersWithRoi([], 'not', [], ROI, fg);
-                size(fgOut1.fibers)
-                % Remove outlier fibers
-                maxDist = 3;  maxLen = 3;   numNodes = 100;
-                M = 'mean';
-                count = 1;  show = 1;
-                [fgclean ,~] =  AFQ_removeFiberOutliers(fgOut1,maxDist,maxLen,numNodes,M,count,show);
-                
-                %                 % get diffusivities along the fiber
-                %                 direction = 'AP'; Nodes = 100;
-                %                 TractProfile{i,hemisphere,r} = SO_FiberValsInTractProfiles(fgclean,dt6,direction,Nodes,1);
-                %                 % save new fg.pdb file
-                savefilename = sprintf('%s_D%dL%d.pdb',fgclean.name,maxDist,maxLen);
-                fgWrite(fgclean,savefilename,'pdb');
+        %         for hemisphere = 1:2
+        for r =1:length(ctrParams.roi2)
+            % Intersect raw OR with Not ROIs
+            fgF = ['*',ctrParams.roi2{r},'*.pdb'];            
+            % load fg
+            fg     = dir(fullfile(fgDir,fgF));
+            [~,ik] = sort(cat(2,fg.datenum),2,'ascend');
+            fg     = fg(ik);
+            fg     = fgRead(fullfile(fgDir,fg(1).name));
+            
+            %                 % Cut the fibers below the acpc plane, to disentangle CST & ATL crossing
+            %                 % at the level of the pons
+            %                 fgname  = fg.name;
+            %                 fg      = dtiSplitInterhemisphericFibers(fg, dt6, -15);
+            %                 fg.name = fgname;
+            
+            % exculde fibers based on wayppoint ROI
+            ROIname = {'Lh_NOT1201.mat','Rh_NOT1201.mat'};
+            if r <=6,
+                ROIf = fullfile(roiDir, ROIname{1});
+            else
+                ROIf = fullfile(roiDir, ROIname{2});
             end
+            ROI = dtiReadRoi(ROIf);
+            [fgOut1,~, ~, ~] = dtiIntersectFibersWithRoi([], 'not', [], ROI, fg);
+            size(fgOut1.fibers)
+            % Remove outlier fibers
+            maxDist = 3;  maxLen = 3;   numNodes = 100;
+            M = 'mean';
+            count = 1;  show = 1;
+            [fgclean ,~] =  AFQ_removeFiberOutliers(fgOut1,maxDist,maxLen,numNodes,M,count,show);
+            
+            %                 % get diffusivities along the fiber
+            %                 direction = 'AP'; Nodes = 100;
+            %                 TractProfile{i,hemisphere,r} = SO_FiberValsInTractProfiles(fgclean,dt6,direction,Nodes,1);
+            %                 % save new fg.pdb file
+            savefilename = sprintf('%s/%s_D%dL%d.pdb',fgDir,fgclean.name,maxDist,maxLen);
+            fgWrite(fgclean,savefilename,'pdb');
         end
-%     end
+    end
+    %     end
 else
 end
 return
@@ -212,7 +208,6 @@ return
 %% measure diffusion properties
 for i = 1:length(subDir)
     fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack',ctrParams.projectName);
-    %             fgDir  = fullfile(homeDir,subDir{i},'/dwi_2nd/fibers/conTrack',ctrParams.projectName);    
     %     roiDir = fullfile(homeDir,sufor l = 1:5;%:length(ctrParams.roi2)
     dt6    = fullfile(homeDir,subDir{i},'/dwi_2nd/dt6.mat');
     dt6    = dtiLoadDt6(dt6);
@@ -220,16 +215,27 @@ for i = 1:length(subDir)
     Nodes  = 100;
     %
     for l = 1:length(ctrParams.roi2)
-        fgF = ['*',ctrParams.roi2{l},'*Lh_NOT1201*.pdb'];
-        FG     = dir(fullfile(fgDir,fgF));
-        for m = 1:length(FG)
-            fg = fgRead(FG(m).name);
-            sprintf('Calcurating %s',fg.name)
-            TractProfile{i,l,m} = SO_FiberValsInTractProfiles(fg,dt6,direction,Nodes,1);
+        if l<= 6,
+            fgF = ['*',ctrParams.roi2{l},'*Lh_NOT1201*_D3L3.pdb'];
+        else
+            fgF = ['*',ctrParams.roi2{l},'*Rh_NOT1201*_D3L3.pdb'];
         end
+        FG     = dir(fullfile(fgDir,fgF));
+        [~,ik] = sort(cat(2,FG.datenum),2,'ascend');
+        FG     = FG(ik);
+        fg     = fgRead(fullfile(fgDir,FG(1).name));
+                
+        sprintf('Calcurating %s',FG.name)
+        TractProfile{i,l} = SO_FiberValsInTractProfiles(fg,dt6,direction,Nodes,1);
     end
 end
+save TP_39_Eccecntricity TractProfile
+
+
 %% plot
+[homeDir,subDir] = Tama_subj;
+
+
 figure; hold on;
 X = 1:100;
 c = jet(5);
