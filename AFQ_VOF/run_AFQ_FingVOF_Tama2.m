@@ -277,19 +277,22 @@ end
 resultDir = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/results';
 load(fullfile(resultDir,'afq_39subjects.mat'));
 
-%% add VOF to afq atructure
-% L_VOF
-fgName = 'L_VOF.pdb';
-roi1Name = afq.roi1names{1,19};
-roi2Name = afq.roi2names{1,19};
-afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
+% %% add VOF to afq atructure
+% %% L_VOF
+% fgName = 'L_VOF.pdb';
+% roi1Name = afq.roi1names{1,19};
+% roi2Name = afq.roi2names{1,19};
+% afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
+% 
+% %% R_VOF
+% fgName = 'R_VOF.pdb';
+% roi1Name = afq.roi1names{1,20};
+% roi2Name = afq.roi2names{1,20};
+% afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
 
-% R_VOF
-fgName = 'R_VOF.pdb';
-roi1Name = afq.roi1names{1,20};
-roi2Name = afq.roi2names{1,20};
-afq = AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1);
 
+
+%%
 %% Figure 5A
 % indivisual FA value along optic tract
 
