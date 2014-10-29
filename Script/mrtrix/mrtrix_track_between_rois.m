@@ -39,7 +39,7 @@ toRois   = {'rh_V1_smooth3mm_NOT'};
 
 % Set upt the MRtrix trakign parameters
 trackingAlgorithm = {'prob'};
-lmax    = [2]; % The appropriate value depends on # of directions. For 32, use lower #'s like 4 or 6. For 70+ dirsaaaaaaaaaaaaaaaa, 6 or 10 is good [10];
+lmax    = [2]; % The appropriate value depends on # of directions. For 32, use lower #'s like 4 or 6. For 70+ directions, 6 or 10 is good [10];
 nSeeds  = 5000; % 10000; 
 nFibers = 50000; %1000000;
 wmMask  = [];
@@ -62,24 +62,24 @@ mrtrix_mrconvert(wmMaskNiftiName, wmMaskMifName);
 % This can take a long time.
 files = mrtrix_init(dtFile,lmax,fibersFolder,wmMask);
 
-% % Some of the following steps only need to be done once for each ROI,
-% % so we want to do some sort of unique operation on the from/toRois
-% individualRois = unique([fromRois, toRois]);
-% 
-% % Convert the ROIs from .mat or .nii.gz to .mif format.
-% for i_roi = 1:length(individualRois)
-%     if exist(fullfile(p, [individualRois{i_roi}, '.nii.gz']),'file')
-%         thisroi = fullfile(p, [individualRois{i_roi}, '.nii.gz']);
-%  
-%     elseif  exist(fullfile(p, [individualRois{i_roi}, '.nii']),'file')
-%         thisroi = fullfile(p, [individualRois{i_roi}, '.nii']);
-%         
-%     elseif   exist(fullfile(p, [individualRois{i_roi}, '.mat']),'file')
-%          thisroi = fullfile(p, [individualRois{i_roi}, '.mat']);
-%     end
-%     
-%     mrtrix_roi2mif(thisroi,refImg);
-% end
+% Some of the following steps only need to be done once for each ROI,
+% so we want to do some sort of unique operation on the from/toRois
+individualRois = unique([fromRois, toRois]);
+
+% Convert the ROIs from .mat or .nii.gz to .mif format.
+for i_roi = 1:length(individualRois)
+    if exist(fullfile(p, [individualRois{i_roi}, '.nii.gz']),'file')
+        thisroi = fullfile(p, [individualRois{i_roi}, '.nii.gz']);
+ 
+    elseif  exist(fullfile(p, [individualRois{i_roi}, '.nii']),'file')
+        thisroi = fullfile(p, [individualRois{i_roi}, '.nii']);
+        
+    elseif   exist(fullfile(p, [individualRois{i_roi}, '.mat']),'file')
+         thisroi = fullfile(p, [individualRois{i_roi}, '.mat']);
+    end
+    
+    mrtrix_roi2mif(thisroi,refImg);
+end
     
 % Create joint from/to Rois to use as a mask
 for nRoi = 1:length(fromRois)
