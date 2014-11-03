@@ -1,0 +1,116 @@
+Version 2
+--- Main Window ---
+Position 100 150
+Size 1462 802
+Is Maximized 0
+Current background image index 0
+
+--- Volumes ---
+Num Volumes :1
+../../../../../../2/wandell/data/DWI-Tamagawa-Japan/JMD-Ctl-SO-20130726-DWI/t1.nii.gz
+
+--- PDB Info ---
+Num PDB's: 1
+../../../../../../2/wandell/data/DWI-Tamagawa-Japan/JMD-Ctl-SO-20130726-DWI/dwi_2nd/fibers/life_mrtrix/SO_LeftOR_SD_PROB_2nd_lmax2_1000.pdb
+--- Pathway Assignment ---
+Locked: 1
+Selected Group: 1
+Num Assigned: 1000
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+--- Pathway Groups ---
+Num Groups: 9
+Name: Trash
+Color: 0.501961 0.501961 0.501961 1
+Visible: 1
+Active: 1
+
+Name: SO_LeftOR_SD_PROB_2nd_lmax2_1000.pdb
+Color: 0.0784314 0.352941 0.784314 1
+Visible: 1
+Active: 1
+
+Name: FG 2
+Color: 0.596078 0.305882 0.639216 1
+Visible: 1
+Active: 1
+
+Name: FG 3
+Color: 1 1 0.2 1
+Visible: 1
+Active: 1
+
+Name: FG 4
+Color: 0.301961 0.686275 0.290196 1
+Visible: 1
+Active: 1
+
+Name: FG 5
+Color: 0.745098 0.156863 0.156863 1
+Visible: 1
+Active: 1
+
+Name: FG 6
+Color: 1 0.498039 0 1
+Visible: 1
+Active: 1
+
+Name: FG 7
+Color: 0.470588 0.705882 0.705882 1
+Visible: 1
+Active: 1
+
+Name: FG 8
+Color: 0.470588 0.392157 0.196078 1
+Visible: 1
+Active: 1
+
+
+Camera Position: -122.17,-81.0552,96.4548
+Camera View Up: -0.266961,0.908748,0.320796
+Camera Focal Point: 0.5,-17.5,18.5
+--- Move tool ---
+Position: (0,0,0)
+Scale :(6.26592,6.26592,6.26592)
+Visible : 0
+--- Scale tool ---
+Position: (0,0,0)
+Scale :(6.26592,6.26592,6.26592)
+Visible : 0
+
+--- Volume State ---
+Volume Section's Position: 0,-18,56
+Volume Section's Visibility: 1,1,1
+Active Image :2
+
+--- Overlays ---
+Num overlay items :1
+Opacity :1
+Range :0 32767
+ColorMapIndex :0
+Visible :0
+
+--- Gesture Panel ---
+Visible :1
+Position :(755,4)
+SelectMode :0
+
+--- Selection Panel ---
+Visible :1
+Position :(857,4)
+SelectMode :0
+
+--- Refine Selection panel ---
+Position -1 -1
+Size 450 260
+Visible 0
+Num ROIs 0
+
+--- Background and overlay panel ---
+Position -1 -1
+Size 458 250
+Visible 0
+
+--- ROIs ---
+Num ROIs: 0
+
