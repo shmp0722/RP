@@ -3,6 +3,15 @@ function IndividualPlot_Tama2
 
 %%
 [homeDir,subDir,JMD,CRD,Ctl,RP] = Tama_subj2;
+
+% %% Load TractProfile data
+% TPdata = fullfile('/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/results/Tama2_TP_SD.mat');
+% load(TPdata)
+
+%% Load TractProfile
+
+cd /biac4/wandell/biac3/wandell7/shumpei/matlab/git/LHON/3RP
+load 3RP_3SD_TractProfile.mat
 %%
 fgN ={'ROR1206_D4L4.pdb','LOR1206_D4L4.pdb','ROTD4L4_1206.pdb','LOTD4L4_1206.pdb'};%,...
 %     'ROTD3L2_1206.pdb','LOTD3L2_1206.pdb'};
