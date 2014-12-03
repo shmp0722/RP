@@ -1,10 +1,10 @@
-function s_ctrIntBathPipeline_OR_Top100K_V1_3mm_clipped_LGN4mm_Tama2
+function s_ctrIntBathPipeline_OR_Top100K_V1_3mm_clipped_LGN4mm_Tama3
 % Multi-Subject Tractography for Tamagawa_subjects using conTrack
 %
 %
 
 %%
-[homeDir,subDir] = Tama_subj;
+[homeDir,subDir] = Tama_subj3;
 %% Set ctrInitBatchParams
 %
 %
@@ -15,7 +15,7 @@ ctrParams.logName = 'myConTrackLog';
 ctrParams.baseDir = homeDir;
 ctrParams.dtDir = 'dwi_2nd';
 ctrParams.roiDir = '/dwi_2nd/ROIs';
-ctrParams.subs = {subDir{4},subDir{5},subDir{6}};
+ctrParams.subs = {subDir{2},subDir{3}};
 
 % set parameter
 ctrParams.roi1 = {'Lt-LGN4','Rt-LGN4'};
@@ -34,7 +34,7 @@ ctrParams.xecuteSh = 0;
 
 %% Run ctrInitBatchTrack
 %
-[cmd infofile] = ctrInitBatchTrack(ctrParams);
+[cmd, ~] = ctrInitBatchTrack(ctrParams);
 
 
 %% run conTrack
