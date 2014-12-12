@@ -8,7 +8,7 @@ function Path = TamagawaPath(option)
 
 
 %% argument check
-if notDefined('option') || isempty(option); option =1;
+if notDefined(option) || isempty(option); option =1;
 end
 if ischar(option)
     option = lower(strrep(option,' ',''));
