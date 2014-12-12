@@ -4,14 +4,19 @@ tamagawahomedir = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan3';
 
 %% navigate to direcotry containing new T1s
 subnames = {...
-        'AMD-Ctl01-HM-dMRI-Anatomy-2014-09-09'...
-        'AMD-Ctl02-YM-dMRI-Anatomy-2014-09-09'...
-        'AMD-Ctl03-TS-dMRI-Anatomy-2014-10-28'};
+    'AMD-Ctl04-AO-61yo-dMRI-Anatomy'
+%     'AMD-Ctl05-TM-71yo-dMRI-Anatomy'
+%     'AMD-Ctl06-YM-66yo-dMRI-Anatomy'
+%     'AMD-Ctl07-MS-61yo-dMRI-Anatomy'
+%     'AMD-Ctl08-HO-62yo-dMRI-Anatomy'
+%     'AMD-Ctl09-KH-70yo-dMRI-Anatomy-dMRI'
+%     'AMD-Ctl10-TH-65yo-dMRI-Anatomy-dMRI'...
+    };
 
 
 %% If you want to segment several subject simultaneously. It would be 
 % better to use matlabpool. matlabpool OPEN <number of core>.
-% matlabpool OPEN 3;
+% matlabpool OPEN 6;
 
 %%
 parfor subinds =1:length(subnames);
