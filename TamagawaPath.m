@@ -25,7 +25,7 @@ switch option
         Path = '/biac4/wandell/biac2/wandell/data/DWI-Tama-subjects';
     case {'git'}
         Path = '/home/shumpei/matlab/git';
-    case {'freesurfer'}
+    case {'freesurfer','fs'}
         Path = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan/freesurfer';
     case {'qmr','qmri','quantitative'}
         Path = '/biac4/wandell/biac2/wandell/data/qMRI';

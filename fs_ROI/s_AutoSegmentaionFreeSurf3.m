@@ -4,8 +4,8 @@ tamagawahomedir = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan3';
 
 %% navigate to direcotry containing new T1s
 subnames = {...
-    'AMD-Ctl04-AO-61yo-dMRI-Anatomy'
-%     'AMD-Ctl05-TM-71yo-dMRI-Anatomy'
+%     'AMD-Ctl04-AO-61yo-dMRI-Anatomy'
+    'AMD-Ctl05-TM-71yo-dMRI-Anatomy'
 %     'AMD-Ctl06-YM-66yo-dMRI-Anatomy'
 %     'AMD-Ctl07-MS-61yo-dMRI-Anatomy'
 %     'AMD-Ctl08-HO-62yo-dMRI-Anatomy'
