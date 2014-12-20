@@ -1,10 +1,6 @@
-function ht_TamagawaPreprocess3(subDir, option)
+function ht_TamagawaPreprocess_GEscanner(subDir, option)
 
-% Preprocessing the diffusion MRI data obtained by SIEMENS 3T scanner in
-% Tamagawa University, Machida, JAPAN
-% 
-%  Requirment
-%  freesurfer segmentation files
+% Preprocessing the diffusion MRI data measured at CNI
 %
 %  INPUTS:
 %   subDir: subject directory name
@@ -15,9 +11,10 @@ function ht_TamagawaPreprocess3(subDir, option)
 %
 %
 % (c) Hiromasa 2012 Stanford VISTA team
+% SO 2014 
 
 if notDefined('subDir')
-    [basedir, subDir] = fileparts(pwd);
+    [~, subDir] = fileparts(pwd);
 end
 
 if notDefined('option')
@@ -25,19 +22,15 @@ if notDefined('option')
 end
 
 %% Set the fullpath to data directory
-% basedir = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan3/';
+basedir = '/biac4/wandell/biac2/wandell/data/qMRI/';
 % cd(basedir)
 
 %% Set the optimal parameter for SIEMENS scan at Tamagawa
 dwParams = dtiInitParams;
-dwParams.clobber=0;
-% This flipping is specifically important for SIEMENS scans
-dwParams.rotateBvecsWithCanXform = 1;%dafautl 0
-dwParams.rotateBvecsWithRx = 0;
-% Phase encoding direction is A/P
-dwParams.phaseEncodeDir = 2; %default 2
-dwParams.flipLrApFlag=0; % default = 0
-dwParams.fitMethod = 'lsrt'; 
+dwParams.clobber=1;
+% add RESTORE
+% dwParams.fitMethod = 'lsrt'; 
+
 %% Define folder name for 1st and 2nd scans
 dt6_base_names = {'dwi', 'dwi_1st', 'dwi_2nd', 'dwi_3rd','dwi_4th'};
 
@@ -45,10 +38,10 @@ subjectpath = fullfile(basedir, subDir);
 cd(subjectpath);
 t1File = fullfile(subjectpath, 't1.nii.gz');
 
-%% Set xform to raw t1 File
-ni = niftiRead(t1File);
-ni1 = niftiSetQto(ni,ni.sto_xyz);
-niftiWrite(ni1);
+% %% Set xform to raw t1 File
+% ni = readFileNifti(t1File);
+% ni1 = niftiSetQto(ni,ni.sto_xyz);
+% writeFileNifti(ni1);
 
 %%  mrAnatAverageAcpcNifti
 % Make sure that Acpc alighnment was done
@@ -84,27 +77,12 @@ switch option
         dwParams.dt6BaseName= dt6_base_names{5};
 end
 
-%% Set rawdtiFile xform 
-ni = readFileNifti(rawdtiFile);
-ni = niftiSetQto(ni,ni.sto_xyz);
-writeFileNifti(ni);
-
-%% make brain mask from fs segmentation file 
-fsDir = getenv('SUBJECTS_DIR');
-
-brainmask_mgz = fullfile(fsDir,subDir,'/mri/brainmask.mgz');
-brainmask_nii = fullfile(fsDir,subDir,'/mri/brainmask.nii.gz');
-
-% transform mgz into nii.gz
-fs_mgzSegToNifti(brainmask_mgz, t1File, brainmask_nii);
-% make it binary  
-brainmask = niftiRead(brainmask_nii);
-brainmask.data(brainmask.data>0)=1; 
-% save BM
-brainmask_binary =fullfile(fsDir,subDir,'/mri/brainmask_binary.nii.gz');
-niftiWrite(brainmask,brainmask_binary)
+% %% Set rawdtiFile xform 
+% ni = readFileNifti(rawdtiFile);
+% ni = niftiSetQto(ni,ni.sto_xyz);
+% writeFileNifti(ni);
 
 %% Run dtiInit
 % Execute dtiInit
-[dt6FileName, outBaseDir] = s_dtiInit(rawdtiFile, t1File, brainmask_binary, dwParams);
+[dt6FileName, outBaseDir] = dtiInit(rawdtiFile, t1File, dwParams);
 

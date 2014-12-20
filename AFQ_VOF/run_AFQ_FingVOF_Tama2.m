@@ -1,6 +1,6 @@
 %% Run AFQ_FindVOF2
 %% difine argument
-[homeDir,subDir] = Tama_subj2;
+% [homeDir,subDir] = Tama_subj2;
 
 % %% Check who is not done
 % 

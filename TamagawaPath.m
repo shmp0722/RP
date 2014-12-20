@@ -28,7 +28,7 @@ switch option
     case {'freesurfer','fs'}
         Path = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan/freesurfer';
     case {'qmr','qmri','quantitative'}
-        Path = '/biac4/wandell/biac2/wandell/data/qMRI';
+        Path = '/peach/shumpei/qMRI';
     case {'mouse'}
         Path = '/biac4/wandell/biac2/wandell/data/Ogawa_Mouse_DWI';
     case {'life_demo'}
