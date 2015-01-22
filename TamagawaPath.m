@@ -35,6 +35,8 @@ switch option
         Path = '/home/shumpei/Downloads/data';
     case {'netta'}
         Path ='/biac4/wandell/biac3/wandell4/data/reading_longitude/dti_adults';
+    case {'RP','rp'}
+        Path ='/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP';
 end
 cd(Path)
 sprintf('You are here. "%s"',Path)

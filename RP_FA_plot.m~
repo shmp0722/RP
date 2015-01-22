@@ -56,10 +56,9 @@ for subID = 1:length(subDir);
     end;
 end
 
-% %% t test
-% 
-% % est of morality 
-% [h(ii),p(ii)] = vartest2(x,y)
+%% F test
+fa
+[h(ii),p(ii)] = vartest2(x,y)
 
 %% F test, ANOVA
 % take group value
