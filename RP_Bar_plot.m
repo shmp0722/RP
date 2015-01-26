@@ -57,105 +57,71 @@ for subID = 1:length(subDir);
             TractProfile{subID,fibID+1}{sdID}.vals.ad]);
     end;
 end
-
-%% Render  Bar Plot
-
-mrvNewGraphWin;hold on;
-
-% Render
+% 
+% %% Render  Bar Plot
+% 
+% mrvNewGraphWin;hold on;
+% 
+% % Render
 Diffusion = {'fa','md','ad','rd'};
-for jj = 1:length(Diffusion)
-    % switch based on property
-    property = Diffusion{jj};
-    
-    switch property
-        case {'fa','FA'}
-            ValCtl =  fa(Ctl,:);
-            ValRP  =  fa(RP,:);
-        case {'md','MD'}
-            ValCtl =  md(Ctl,:);
-            ValRP  =  md(RP,:);
-        case {'ad','AD'}
-            ValCtl =  ad(Ctl,:);
-            ValRP  =  ad(RP,:);
-        case {'rd','RD'}
-            ValCtl =  rd(Ctl,:);
-            ValRP  =  rd(RP,:);
-    end
-    
-    %% Stats
-    % test for normality in whole nodes
-    [H, pValue, SWstatistic] = swtest(ValCtl(:), 0.05);
-    if H,
-        [H, pValue, SWstatistic] = swtest(ValRP(:), 0.05);
-    else
-        H = 0;
-    end
-    if H,
-        [h(jj), p(jj)] =ttest2(ValCtl(:),ValRP(:));
-        % render bar graph
-        bar([2*jj-1,2*jj],[nanmean(ValCtl(:)),nanmean(ValRP(:))],0.5,'facecolor',[.95 .6 .5])
-        % add error bar
-        errorbar2([2*jj-1,2*jj],[nanmean(ValCtl(:)),nanmean(ValRP(:))],...
-            [nanstd(ValCtl(:)), nanstd(ValRP(:))],1,...
-            'color',[0 0 0]);
-    end
-    
-end
+% for jj = 1:length(Diffusion)
+%     % switch based on property
+%     property = Diffusion{jj};
+%     
+%     switch property
+%         case {'fa','FA'}
+%             ValCtl =  fa(Ctl,:);
+%             ValRP  =  fa(RP,:);
+%         case {'md','MD'}
+%             ValCtl =  md(Ctl,:);
+%             ValRP  =  md(RP,:);
+%         case {'ad','AD'}
+%             ValCtl =  ad(Ctl,:);
+%             ValRP  =  ad(RP,:);
+%         case {'rd','RD'}
+%             ValCtl =  rd(Ctl,:);
+%             ValRP  =  rd(RP,:);
+%     end
+%     
+%     %% Stats
+%     % test for normality in whole nodes
+%     [H, pValue, SWstatistic] = swtest(ValCtl(:), 0.05);
+%     if H,
+%         [H, pValue, SWstatistic] = swtest(ValRP(:), 0.05);
+%     else
+%         H = 0;
+%     end
+%     if H,
+%         [h(jj), p(jj)] =ttest2(ValCtl(:),ValRP(:));
+%         % render bar graph
+%         bar([2*jj-1,2*jj],[nanmean(ValCtl(:)),nanmean(ValRP(:))],0.5,'facecolor',[.95 .6 .5])
+%         % add error bar
+%         errorbar2([2*jj-1,2*jj],[nanmean(ValCtl(:)),nanmean(ValRP(:))],...
+%             [nanstd(ValCtl(:)), nanstd(ValRP(:))],1,...
+%             'color',[0 0 0]);
+%     end
+%     
+% end
+% 
+% % make the figure up
+% B = gca;
+% B.XTick = 1.5:2:7.5;
+% B.XTickLabel = upper(Diffusion);
+% B.YTick = [0,0.9 ,1.8];
+% B.YLabel.String   = 'Diffusivity'; %sprintf('%s',upper(property));
+% B.YLabel.FontSize = 16;
+% B.XLabel.String   = 'Group';
+% B.XLabel.FontSize = 16;
+% set(B, 'tickdir','out', 'box','off')
+% 
+% hleg1 = legend('Healthy','RP');
+% set(hleg1,'box','off')
+% return
 
-% make the figure up
-B = gca;
-B.XTick = 1.5:2:7.5;
-B.XTickLabel = upper(Diffusion);
-B.YTick = [0,0.9 ,1.8];
-B.YLabel.String   = 'Diffusivity'; %sprintf('%s',upper(property));
-B.YLabel.FontSize = 16;
-B.XLabel.String   = 'Group';
-B.XLabel.FontSize = 16; 
-set(B, 'tickdir','out', 'box','off')
+%% group plot plus error bar.
+% this looks better than previous one.
 
-hleg1 = legend('Healthy','RP');
-set(hleg1,'box','off')
-return
-%% 
 mrvNewGraphWin; hold on;
-set(gca, 'tickdir','out', 'box','off')
-
-cFA = nanmean(nanmean(fa(Ctl,:)));
-pFA = nanmean(nanmean(fa(RP,:)));
-cMD = nanmean(nanmean(md(Ctl,:)));
-pMD = nanmean(nanmean(md(RP,:)));
-cAD = nanmean(nanmean(ad(Ctl,:)));
-pAD = nanmean(nanmean(ad(RP,:)));
-cRD = nanmean(nanmean(rd(Ctl,:)));
-pRD = nanmean(nanmean(rd(RP,:)));
-
-bar([cFA,pFA;cMD,pMD;cAD,pAD;cRD,pRD])
-
-B = gca;
-B.XTick = 1:4;
-B.XTickLabel = upper(Diffusion);
-B.YTick = [0,0.9 ,1.8];
-B.YLabel.String   = 'Diffusivity'; %sprintf('%s',upper(property));
-B.YLabel.FontSize = 16;
-B.XLabel.String   = 'Group';
-B.XLabel.FontSize = 16; 
-set(B, 'tickdir','out', 'box','off')
-
-hleg1 = legend('Healthy','RP');
-set(hleg1,'box','off')
-
-%% add error bar
-X = [1,1,2,2,3,3,4,4];
-% Y = [
-errorbar2([2*jj-1,2*jj],[nanmean(ValCtl(:)),nanmean(ValRP(:))],...
-            [nanstd(ValCtl(:)), nanstd(ValRP(:))],1,...
-            'color',[0 0 0]);
-
-        
-        
-%%
-% mrvNewGraphWin; hold on;
 
 cFA = reshape(fa(Ctl,:),length(Ctl)*100,1);
 pFA = reshape(fa(RP,:),length(RP)*100,1);
@@ -166,9 +132,29 @@ pAD = reshape(ad(RP,:),length(RP)*100,1);
 cRD = reshape(rd(Ctl,:),length(Ctl)*100,1);
 pRD = reshape(rd(RP,:),length(RP)*100,1);
 
-% Basic usage:
-  Y = [mean(cFA),mean(pFA);mean(cMD),mean(pMD);mean(cAD),mean(pAD);...
-      mean(cRD),mean(pRD)];
-  E = [std(cFA),std(pFA);std(cMD),std(pMD);std(cAD),std(pAD);...
-      std(cRD),std(pRD)];
-  errorbar_groups(Y,E);
+% Value
+Y = [mean(cFA),mean(pFA);mean(cMD),mean(pMD);mean(cAD),mean(pAD);...
+    mean(cRD),mean(pRD)];
+% Error
+E = [std(cFA),std(pFA);std(cMD),std(pMD);std(cAD),std(pAD);...
+    std(cRD),std(pRD)];
+%
+model_series = Y;
+model_error = E;
+bar(model_series);
+
+set(h,'BarWidth',1);    % The bars will now touch each other
+set(h,'XTick',[1:4],'XTicklabel',upper(Diffusion),'tickdir','out', 'box','off')
+
+lh = legend('Healthy','RP');
+% set(lh,'Location','BestOutside','Orientation','horizontal')
+set(lh,'box','off')
+hold on;
+numgroups = size(model_series, 1);
+numbars = size(model_series, 2);
+groupwidth = min(0.8, numbars/(numbars+1.5));
+for i = 1:numbars
+    % Based on barweb.m by Bolu Ajiboye from MATLAB File Exchange
+    x = (1:numgroups) - groupwidth/2 + (2*i-1) * groupwidth / (2*numbars);  % Aligning error bar with individual bar
+    errorbar(x, model_series(:,i), model_error(:,i), 'k', 'linestyle', 'none');
+end
