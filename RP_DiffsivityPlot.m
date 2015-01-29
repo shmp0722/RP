@@ -16,6 +16,8 @@ function RP_DiffsivityPlot
 
 %% Load TractProfile data
 TPdata = fullfile('/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/results/Tama2_TP_SD.mat');
+% if you use local machine,
+% load '/Users/shumpei/Google Drive/RP/Tama2_TP_SD.mat'
 load(TPdata)
 
 %% Figure 
@@ -71,6 +73,9 @@ for jj= 1: 100
     C{jj}=co;
 end
 Portion =  p<0.01; % where is most effected
+
+%% t-test
+
 
 %% Optic Tract
 % FA   
