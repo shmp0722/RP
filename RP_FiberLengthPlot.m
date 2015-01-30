@@ -19,7 +19,7 @@ load(fullfile(Tama_subj2,'results','Tama2_Percentile.mat'))
 X = 1:100; %$ number of  nodes
 c = lines(100); % line colors
 
-figure; hold on;
+mrvNewGraphWin; hold on;
 for fibID = 1
     for pctl = 2:6
         % take diffusion values
@@ -74,31 +74,31 @@ for fibID = 1
         % mean plot
         plot(m,'color',[0 0 0], 'linewidth',3 )
         
-        %% CRD
-        % individual
-        for k = CRD %1:length(subDir)
-            plot(X,fa(k,:),'Color',c(1,:),...
-                'linewidth',1);
-        end
-        % mean 
-        m=nanmean(fa(CRD,:));
-        plot(X,m,'Color',c(1,:),...
-            'linewidth',3)
+%         %% CRD
+%         % individual
+%         for k = CRD %1:length(subDir)
+%             plot(X,fa(k,:),'Color',c(1,:),...
+%                 'linewidth',1);
+%         end
+%         % mean 
+%         m=nanmean(fa(CRD,:));
+%         plot(X,m,'Color',c(1,:),...
+%             'linewidth',3)
         
         %% RP       
         % individual
         for k = RP 
-            plot(X,fa(k,:),'Color',c(3,:),...
+            plot(X,fa(k,:),'Color',c(5,:),...
                 'linewidth',1);
         end
         % mean
-        plot(X,nanmean(fa(RP,:)),'Color',c(3,:),...
+        plot(X,nanmean(fa(RP,:)),'Color',c(5,:),...
             'linewidth',3);
         % labeling
         ylabel('Fractional anisotropy','FontName','Times','FontSize',14);
         xlabel('Location','FontName','Times','FontSize',14);       
         axis([11, 90 ,0.15, 0.750001])
-        
+        set(gca, 'tickDir','out','ylim',[0.2 0.8],'ytick',[0.2:0.2:0.8])
         axis('square')
         hold off;
     end
