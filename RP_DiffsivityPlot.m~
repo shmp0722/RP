@@ -57,8 +57,6 @@ for subID = 1:length(subDir);
     end;
 end
 
-
-
 %% ANOVA
 Ctl_fa =  fa(Ctl,:);
 RP_fa =  fa(RP,:);

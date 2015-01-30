@@ -61,6 +61,12 @@ for subID = 1:length(subDir);
 end
 
 %% switch based on property
+% Diffusion = {'fa','md','ad','rd'};
+
+% for ii =1:length(Diffusion)
+%
+%     property = Diffusion{ii};
+
 switch property
     case {'fa','FA'}
         ValCtl =  fa(Ctl,:);
@@ -76,58 +82,11 @@ switch property
         ValRP =  rd(RP,:);
 end
 
-%% Stats
-% test for normality in whole nodes
-[H, pValue, SWstatistic] = swtest(ValCtl(:), 0.05);
-if H,
-    [H, pValue, SWstatistic] = swtest(ValRP(:), 0.05);
-else
-    H = 0;
-end
-if H,
-    [h, p , stats] =ttest2(ValCtl(:),ValRP(:));
-    mrvNewGraphWin;hold on;
-    bar([nanmean(ValCtl(:)),nanmean(ValRP(:))],0.5)
-    errorbar2([1,2],[nanmean(ValCtl(:)),nanmean(ValRP(:))],...
-        [nanstd(ValCtl(:)), nanstd(ValRP(:))],1,...
-        'color',[0 0 0]);
-end
-
-B = gca;
-B.XTick = [1,2];
-B.XTickLabel = {'Ctl','RP'};
-B.YTick = [0, 0.2 , 0.4];
-B.YLabel.String = sprintf('%s',upper(property));
-B.XLabel.String = 'Group';
-%%
-% test for normality using Shapiro Wilk test in each nodes
-for ii = 1:length(ValCtl);
-    [H(ii), pValue(ii), SWstatistic{ii}] = swtest(ValCtl(:,ii), 0.05);
-end
-
+%% Wilcoxon
 for ii = 1:length(ValRP);
-    [H(ii), pValue(ii), SWstatistic{ii}] = swtest(ValRP(:,ii), 0.05);
+    [p(ii),h(ii)] = ranksum(ValCtl(:,ii),ValRP(:,ii));
 end
 
-%%
-mrvNewGraphWin; hold on;
-
-
-
-% Kolmogorov-Smirnov test is good for big data rather than relative small
-% number of subject
-% [h,p,ks2stat] = kstest(ValCtl);
-%
-% %%
-% [h,p,ks2stat] = kstest(ValRP);
-%
-% %% F test
-% [h, p] = vartest2(ValCtl,ValRP);
-
-%% T test (not paired)
-[h, p, ci] = ttest2(ValCtl,ValRP);
-
-P = uint8(p<0.01);
 % %% ANOVA
 %
 % for jj= 1: 100
@@ -144,15 +103,15 @@ P = uint8(p<0.01);
 %% Optic Tract
 % FA
 % figure; hold on;
-mrvNewGraphWin;hold on;
+mrvNewGraphWin; hold on;
 X = 1:100;
 c = lines(100);
 
 % bars where is significant difference between two groups
 % p<0.05
-bar(1:100,h,1,'EdgeColor','none','facecolor',[0.8 0.8 0.8])
+bar(1:100,h,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
 % p,0.01
-bar(1:100,P,1,'EdgeColor','none','facecolor',[0.6 0.6 0.6])
+% bar(1:100,p,1,'EdgeColor','none','facecolor',[0.6 0.6 0.6])
 
 % Control
 st = nanstd(ValCtl,1);
@@ -174,31 +133,35 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 
 % % add individual FA plot
 % for k = CRD %1:length(subDir)
-%     plot(X,fa(k,:),'Color',c(3,:),'linewidth',1);
+%     plot(X,ValRP(k,:),'Color',c(3,:),'linewidth',1);
 % end
 % m   = nanmean(fa(CRD,:));
 % plot(X,m,'Color',c(3,:) ,'linewidth',3)
 
 
 % add individual
-for k = RP %1:length(subDir)
-    plot(X,fa(k,:),'Color',c(1,:),'linewidth',1);
+for k =1:length(RP) %1:length(subDir)
+    plot(X,ValRP(k,:),'--','Color',c(5,:),'linewidth',1);
 end
 % plot mean value
 m   = nanmean(ValRP);
-plot(X,m,'Color',c(1,:) ,'linewidth',3)
+plot(X,m,'Color',c(5,:) ,'linewidth',3)
 
 % add label
 xlabel('Location','fontSize',14);
-ylabel('Fractional anisotropy','fontSize',14);
+ylabel(upper(property),'fontSize',14);
 title('Optic tract','fontSize',14)
-xlim([10,90])
-ylim([0 0.6])
-Fig = gca;
-Fig.YTick = [0 0.2 0.4 0.6];
+
+% adjustment
+set(gca,'xlim',[10,90],'ylim',[0 0.6], 'xtick',[],'ytick',[0:0.3:0.6],...
+    'xtick',[10 90],'xtickLabel',{'OC','LGN'},...
+    'tickDir','out','tickLength', [0.01    0.02])
+end
+
+return
 %% Optic tracrt
 % AD
-figure; hold on;
+mrvNewGraphWin; hold on;
 % bar(1:100,Portion.*3,1.0)
 
 % Control
@@ -229,16 +192,18 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 
 % add individual
 for k = RP %1:length(subDir)
-    plot(X,ad(k,:),'Color',c(1,:),'linewidth',1);
+    plot(X,ad(k,:),'Color',c(5,:),'linewidth',1);
 end
 % plot mean value
 m   = nanmean(ad(RP,:));
-plot(X,m,'Color',c(1,:) ,'linewidth',3)
+plot(X,m,'Color',c(5,:) ,'linewidth',3)
 
 % add label
 xlabel('Location','fontSize',14);
 ylabel('Axial diffusivity','fontSize',14);
 title('Optic tract','fontSize',14);
+
+
 xlim([10,90])
 ylim([0.9 2.3])
 h =gca;
@@ -275,11 +240,11 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 
 % rdd individual
 for k = RP %1:length(subDir)
-    plot(X,rd(k,:),'Color',c(1,:),'linewidth',1);
+    plot(X,rd(k,:),'Color',c(5,:),'linewidth',1);
 end
 % plot mean value
 m   = nanmean(rd(RP,:));
-plot(X,m,'Color',c(1,:) ,'linewidth',3)
+plot(X,m,'Color',c(5,:) ,'linewidth',3)
 
 % add label
 xlabel('Location','fontSize',14);
@@ -361,7 +326,7 @@ plot(m,'color',[0 0 0], 'linewidth',3)
 
 % % individual FA
 % for k = CRD %1:length(subDir)
-%     plot(X,fa(k,:),'Color',c(3,:),'linewidth',1);
+%     plot(X,ValRP(k,:),'Color',c(3,:),'linewidth',1);
 % end
 % m   = nanmean(fa(CRD,:));
 % plot(X,m,'Color',c(3,:) ,'linewidth',2)
@@ -369,11 +334,11 @@ plot(m,'color',[0 0 0], 'linewidth',3)
 
 % add individual plot
 for k = RP %1:length(subDir)
-    plot(X,fa(k,:),'Color',c(1,:),'linewidth',1);
+    plot(X,ValRP(k,:),'Color',c(5,:),'linewidth',1);
 end
 % plot mean value
 m   = nanmean(ValRP);
-plot(X,m,'Color',c(1,:) ,'linewidth',2)
+plot(X,m,'Color',c(5,:) ,'linewidth',2)
 
 % add labels
 xlabel('Location','fontSize',14);
@@ -419,11 +384,11 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 
 % add individual
 for k = RP %1:length(subDir)
-    plot(X,ad(k,:),'Color',c(1,:),'linewidth',1);
+    plot(X,ad(k,:),'Color',c(5,:),'linewidth',1);
 end
 % plot mean value
 m   = nanmean(ad(RP,:));
-plot(X,m,'Color',c(1,:) ,'linewidth',3)
+plot(X,m,'Color',c(5,:) ,'linewidth',3)
 
 % add label
 xlabel('Location','fontSize',14);
@@ -464,11 +429,11 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 
 % rdd individual
 for k = RP %1:length(subDir)
-    plot(X,rd(k,:),'Color',c(1,:),'linewidth',1);
+    plot(X,rd(k,:),'Color',c(5,:),'linewidth',1);
 end
 % plot mean value
 m   = nanmean(rd(RP,:));
-plot(X,m,'Color',c(1,:) ,'linewidth',3)
+plot(X,m,'Color',c(5,:) ,'linewidth',3)
 
 % add label
 xlabel('Location','fontSize',14);
