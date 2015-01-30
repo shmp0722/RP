@@ -26,8 +26,8 @@ load(TPdata)
 % indivisual FA value along "optic tract"
 
 % take values
-fibID =3; %
-sdID = 1;%:7
+fibID = 1,3; %
+sdID  = 1;%:7
 % make one sheet diffusivity
 % merge both hemisphere
 for subID = 1:length(subDir);
@@ -60,49 +60,11 @@ for subID = 1:length(subDir);
     end;
 end
 
-Diffusion = {'fa','md','ad','rd'};
-
-
-%
-%     %% Stats
-%     % test for normality in whole nodes
-%     [H, pValue, SWstatistic] = swtest(ValCtl(:), 0.05);
-%     if H,
-%         [H, pValue, SWstatistic] = swtest(ValRP(:), 0.05);
-%     else
-%         H = 0;
-%     end
-%     if H,
-%         [h(jj), p(jj)] =ttest2(ValCtl(:),ValRP(:));
-%         % render bar graph
-%         bar([2*jj-1,2*jj],[nanmean(ValCtl(:)),nanmean(ValRP(:))],0.5,'facecolor',[.95 .6 .5])
-%         % add error bar
-%         errorbar2([2*jj-1,2*jj],[nanmean(ValCtl(:)),nanmean(ValRP(:))],...
-%             [nanstd(ValCtl(:)), nanstd(ValRP(:))],1,...
-%             'color',[0 0 0]);
-%     end
-%
-% end
-%
-% % make the figure up
-% B = gca;
-% B.XTick = 1.5:2:7.5;
-% B.XTickLabel = upper(Diffusion);
-% B.YTick = [0,0.9 ,1.8];
-% B.YLabel.String   = 'Diffusivity'; %sprintf('%s',upper(property));
-% B.YLabel.FontSize = 16;
-% B.XLabel.String   = 'Group';
-% B.XLabel.FontSize = 16;
-% set(B, 'tickdir','out', 'box','off')
-%
-% hleg1 = legend('Healthy','RP');
-% set(hleg1,'box','off')
-% return
-
 %% group plot plus error bar.
 % this looks better than previous one.
 
 mrvNewGraphWin; hold on;
+Diffusion = {'fa','md','ad','rd'};
 
 cFA = reshape(fa(Ctl,:),length(Ctl)*100,1);
 pFA = reshape(fa(RP,:),length(RP)*100,1);
@@ -125,15 +87,13 @@ h = gca;
 
 % set(h,'BarWidth',1);    % The bars will now touch each other
 set(h,'XTick',[1:4],'XTicklabel',upper(Diffusion),'tickdir','out', 'box','off')
-set(h,'YTick',[0:0.9:1.8]);
-h.YLim = [0 1.8];
 
 % add legend
 lh = legend('Healthy','RP');
-set(lh,'box','off')
+set(lh,'box','off','EdgeColor','none')
+lh.Position =  [0.7031 0.8318 0.1799 0.0633];
 
-%% add error bars
-hold on;
+% add error bars
 numgroups = size(Y, 1);
 numbars = size(Y, 2);
 groupwidth = min(0.8, numbars/(numbars+1.5));
@@ -151,29 +111,33 @@ end
 [H(3), P(3)] =ttest2(cAD,pAD);
 [H(4), P(4)] =ttest2(cRD,pRD);
 
-
-
-
+for ii =1:length(Diffusion)
+    if H(ii),
+        plot(ii, max(Y(ii,:))+0.3 , '*','color',[0 0 0]);
+        if P(ii)<0.01,
+            plot(ii, max(Y(ii,:))+0.4 , '*','color',[0 0 0]);
+        end
+    end
+end
 
 %%
 switch fibID
     case {3}
         title('Optic tract')
-        
+        set(gca, 'ylim',[0,2],'ytick',[0,1,2])
         % save the figure
-        saveas(gcf, 'RP_barPlot_OT.png')
-        saveas(gcf, 'RP_barPlot_OT.eps','psc2')
         saveas(gcf, 'RP_barPlot_OT.png')
         saveas(gcf, 'RP_barPlot_OT.eps','psc2')
         
     case {1}
         title('Optic radiation')
+        set(h,'ylim',[0,1.8],'YTick',[0:0.9:1.8]);
+ 
         
         % save the figure
         saveas(gcf, 'RP_barPlot_OR.png')
         saveas(gcf, 'RP_barPlot_OR.eps','psc2')
-        saveas(gcf, 'RP_barPlot_OR.png')
-        saveas(gcf, 'RP_barPlot_OR.eps','psc2')
+       
 end
-
+hold off;
 
