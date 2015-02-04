@@ -32,7 +32,7 @@ for jj=1:2;
     sdID  = 1;%:7
     % make one sheet diffusivity
     % merge both hemisphere
-    for subID = 1:length(subDir);
+    for subID = 1:length(TractProfile);
         if isempty(TractProfile{subID,fibID}{sdID}.nfibers);
             fa(subID,:) =nan(1,100);
         else

@@ -30,7 +30,7 @@ fibID =3; %
 sdID = 1;%:7
 % make one sheet diffusivity
 % merge both hemisphere
-for subID = 1:length(subDir);
+for subID = 1:length(TractProfile);
     if isempty(TractProfile{subID,fibID}{sdID}.nfibers);
         fa(subID,:) =nan(1,100);
     else
@@ -181,13 +181,14 @@ for ii =1:length(Diffusion)
     set(gca,'xlim',XLIM,'ylim',YLIM, 'xtick',XTICK,'ytick',YTICK,...
         'xtickLabel',XTICKLabel,...
         'tickDir','out','tickLength', [0.01    0.02])
+    hold off;
+    
+    % save
+    if save_fig,
+        saveas(gcf,sprintf('OT_%s.png',upper(property)))
+        saveas(gcf,sprintf('OT_%s.eps',upper(property)),'psc2')
+    end
 end
-hold off;
 
-% save 
-if save_fig,
-    saveas(gcf,sprintf('OT_%s.png',upper(property)))
-    saveas(gcf,sprintf('OT_%s.eps',upper(property)),'psc2')
-end
 
 end

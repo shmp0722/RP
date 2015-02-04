@@ -27,7 +27,7 @@ load(TPdata)
 fibID =3; %
 sdID = 1;%:7
 % make one sheet diffusivity.The value is merged both hemisphere.
-for subID = 1:length(subDir);
+for subID = 1:length(TractProfile);
     if isempty(TractProfile{subID,fibID}{sdID}.nfibers);
         fa(subID,:) =nan(1,100);
     else

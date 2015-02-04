@@ -30,7 +30,7 @@ fibID =1; %
 sdID = 1;%:7
 % make one sheet diffusivity
 % merge both hemisphere
-for subID = 1:length(subDir);
+for subID = 1:length(TractProfile);
     if isempty(TractProfile{subID,fibID}{sdID}.nfibers);
         fa(subID,:) =nan(1,100);
     else
@@ -113,7 +113,7 @@ for ii =1:length(Diffusion)
         [p(ii),h(ii)] = ranksum(ValCtl(:,ii),ValRP(:,ii),'alpha',0.05);
     end
     
-      
+    
     %
     mrvNewGraphWin; hold on;
     X = 1:100;
@@ -169,14 +169,15 @@ for ii =1:length(Diffusion)
         'xtickLabel',XTICKLabel,...
         'tickDir','out','tickLength', [0.01    0.02])
     
-%     lh = legend('RP','Control');
-%     set(lh,'box','off')
-%     L = get(lh);
+    %     lh = legend('RP','Control');
+    %     set(lh,'box','off')
+    %     L = get(lh);
+    hold off;
+    % save
+    if save_fig,
+        saveas(gcf,sprintf('OR_%s.png',upper(property)))
+        saveas(gcf,sprintf('OR_%s.eps',upper(property)),'psc2')
+    end
 end
-hold off;
-% save 
-if save_fig,
-    saveas(gcf,sprintf('OR_%s.png',upper(property)))
-    saveas(gcf,sprintf('OR_%s.eps',upper(property)),'psc2')
-end
+
 end

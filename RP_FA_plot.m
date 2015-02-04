@@ -1,4 +1,4 @@
-function RP_FA_plot(property)
+function RP_FA_plot
 % Plot figure 5 showing individual FA value along the core of OR and optic tract.
 %
 % Repository dependencies
@@ -30,7 +30,7 @@ fibID =3; %
 sdID = 1;%:7
 % make one sheet diffusivity
 % merge both hemisphere
-for subID = 1:length(subDir);
+for subID = 1:length(TractProfile);
     if isempty(TractProfile{subID,fibID}{sdID}.nfibers);
         fa(subID,:) =nan(1,100);
     else
@@ -61,11 +61,11 @@ for subID = 1:length(subDir);
 end
 
 %% switch based on property
-% Diffusion = {'fa','md','ad','rd'};
+Diffusion = {'fa','md','ad','rd'};
 
-% for ii =1:length(Diffusion)
-%
-%     property = Diffusion{ii};
+for ii =1:length(Diffusion)
+
+    property = Diffusion{ii};
 
 switch property
     case {'fa','FA'}
@@ -441,6 +441,5 @@ ylabel('Radial diffusivity','fontSize',14);
 title('Optic Radiation','fontSize',14);
 axis([10, 90 ,0.3499999, 0.800001])
 
-%% End
 
 
