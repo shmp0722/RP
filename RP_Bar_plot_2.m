@@ -1,4 +1,4 @@
-function RP_Bar_plot_2
+function RP_Bar_plot_2(save_fig)
 % Plot figure 5 showing individual FA value along the core of OR and optic tract.
 %
 % %% MATLAB 2014b %%
@@ -9,6 +9,11 @@ function RP_Bar_plot_2
 %    LHON2
 %
 % SO@ Stanford Vista team
+
+%% argument check
+if isempty(save_fig),
+    save_fig = 0;
+end
 
 %% Identify the directories and subject types in the study
 % The full call can be
@@ -26,7 +31,7 @@ load(TPdata)
 % indivisual FA value along "optic tract"
 
 % take values
-ID = [1,3]; %
+ID = [3,1]; %
 for jj=1:2;
     fibID = ID(jj);
     sdID  = 1;%:7
@@ -129,18 +134,18 @@ P = zeros(4,2);
 [H(4,:), P(4,:)] =ttest2(cRD,pRD);
 
 %% put stars
-% OT
+% OR
 x = (1:numgroups) - groupwidth/2 + 2*(2-1) * groupwidth / (2*numbars);
 for i =1:length(Diffusion)
     % put '*' if there is significant difference,
     if H(i,1),
         plot(x(i), max(Y(i,:))+0.3 , '*','color',[0 0 0]);
         if P(i,1)<0.01,
-            plot(x(i), max(Y(i,:))+0.4 , '*','color',[0 0 0]);
+            plot(x(i), max(Y(i,:))+0.35 , '*','color',[0 0 0]);
         end
     end
 end
-% OR
+% OT
 x = (1:numgroups) - groupwidth/2 + 6*(2-1) * groupwidth / (2*numbars);
 for i =1:length(Diffusion)
     if H(i,2),
@@ -154,13 +159,13 @@ end
 
 %% make up and save
 
-title('Diffusivities')
+xlabel('Diffusivities')
 set(gca, 'ylim',[0,2],'ytick',[0,1,2])
 hold off;
 
 % save the figure
-
-saveas(gcf, 'RP_barPlot.eps','psc2')
-
+if save_fig
+    saveas(gcf, 'RP_barPlot.eps','psc2')
+end
 
 end
