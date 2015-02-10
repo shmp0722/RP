@@ -5,6 +5,12 @@ function Plot_GCA(save_fg)
 %
 % SO@Stanford Vista team 2015
 
+%% argument check
+
+if isempty(save_fg),
+    save_fg = 0;
+end
+
 %% Load patients' GCA 
 % if you are air
 % cd /Users/shumpei/Google Drive/RP
@@ -62,7 +68,7 @@ MIN = plot(2, OD(:,2),'o','linewidth',2);
 AVE = plot(1, OD(:,1),'o','linewidth',2);
 
 % add title
-title('OD-GCA thinckness','fontsize',14);
+title('R GCIPL thinckness','fontsize',14);
 set(gca, 'tickdir','out','box','off')
 % save the fig
 if save_fg,
@@ -93,7 +99,7 @@ MIN = plot(2, OS(:,2),'o','linewidth',2);
 AVE = plot(1, OS(:,1),'o','linewidth',2);
 
 % add title
-title('OS-GCA thinckness','fontsize',14);
+title('L-GCIPL thinckness','fontsize',14);
 set(gca, 'tickdir','out','box','off')
 % make the fig up
 xlim([0, 9]);
@@ -133,7 +139,7 @@ for jj =1 : 8;
 end
 
 % add title
-title('GCA thinckness','fontsize',14);
+title('GCIPL thinckness','fontsize',14);
 set(gca, 'tickdir','out','box','off')
 
 % save
