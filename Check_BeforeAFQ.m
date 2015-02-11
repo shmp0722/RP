@@ -156,6 +156,81 @@ roi2Name = 'rh_V1_smooth3mm_NOT.mat';
 
 afq = SO_AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1,0,[],0);
 
-% save afq
+%% save afq
 save '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal_02102015.mat'
+
+%% 
+
+load '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal_02102015.mat'
+
+%% Render plots
+% OT
+mrvNewGraphWin; hold on;
+
+fibID = 21;
+%% Figure 5A
+% indivisual FA value along optic tract
+
+switch Diffusivity
+    case {'fa','FA'}
+        pVal  = afq.vals.fa{fibID};
+        nVals = afq.vals.fa(Ctl,:);
+    case {'md','MD'}
+        pVal = afq.vals.md;
+    case {'ad','AD'}
+        pVal = afq.vals.ad;
+    case {'rd','RD'}
+        pVal = afq.vals.rd;
+end
+    
+%%
+
+%% Optic Tract
+figure; hold on;
+X = 1:100;
+c = lines(100);
+
+% put bars based on ANOVA (p<0.01)
+bar(1:100,Portion,1.0)
+
+% Control
+st = nanstd(fa(Ctl,:),1);
+m   = nanmean(fa(Ctl,:));
+
+% render control subjects range
+A3 = area(m+2*st);
+A1 = area(m+st);
+A2 = area(m-st);
+A4 = area(m-2*st);
+
+% set color and style
+set(A1,'FaceColor',[0.6 0.6 0.6],'linestyle','none')
+set(A2,'FaceColor',[0.8 0.8 0.8],'linestyle','none')
+set(A3,'FaceColor',[0.8 0.8 0.8],'linestyle','none')
+set(A4,'FaceColor',[1 1 1],'linestyle','none')
+
+plot(m,'color',[0 0 0], 'linewidth',3 )
+
+% add individual FA plot
+for k = CRD %1:length(subDir)
+    plot(X,fa(k,:),'Color',c(3,:),...
+        'linewidth',1);
+end
+m   = nanmean(fa(CRD,:));
+plot(X,m,'Color',c(3,:) ,'linewidth',3)
+
+
+% add individual
+for k = LHON %1:length(subDir)
+    plot(X,fa(k,:),'Color',c(4,:),'linewidth',1);
+end
+% plot mean value
+m   = nanmean(fa(LHON,:));
+plot(X,m,'Color',c(4,:) ,'linewidth',3)
+
+% add label
+xlabel('Location','fontName','Times','fontSize',14);
+ylabel('Fractional anisotropy','fontName','Times','fontSize',14);
+title('Optic tract','fontName','Times','fontSize',14)
+axis([10, 90 ,0.0, 0.600001])
 
