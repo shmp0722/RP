@@ -134,7 +134,7 @@ P = zeros(4,2);
 [H(4,:), P(4,:)] =ttest2(cRD,pRD);
 
 %% put stars
-% OR
+% OR 
 x = (1:numgroups) - groupwidth/2 + 2*(2-1) * groupwidth / (2*numbars);
 for i =1:length(Diffusion)
     % put '*' if there is significant difference,

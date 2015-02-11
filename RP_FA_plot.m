@@ -64,98 +64,98 @@ end
 Diffusion = {'fa','md','ad','rd'};
 
 for ii =1:length(Diffusion)
-
+    
     property = Diffusion{ii};
-
-switch property
-    case {'fa','FA'}
-        ValCtl =  fa(Ctl,:);
-        ValRP =  fa(RP,:);
-    case {'md','MD'}
-        ValCtl =  md(Ctl,:);
-        ValRP =  md(RP,:);
-    case {'ad','AD'}
-        ValCtl =  ad(Ctl,:);
-        ValRP =  ad(RP,:);
-    case {'rd','RD'}
-        ValCtl =  rd(Ctl,:);
-        ValRP =  rd(RP,:);
-end
-
-%% Wilcoxon
-for ii = 1:length(ValRP);
-    [p(ii),h(ii)] = ranksum(ValCtl(:,ii),ValRP(:,ii));
-end
-
-% %% ANOVA
-%
-% for jj= 1: 100
-%     pac = nan(14,3);
-%     pac(:,1)= ValCtl(:,jj);
-%     pac(1:length(RP),2)= ValRP(:,jj);
-%     pac(1:length(CRD),3)= CRD_fa(:,jj);
-%     [p(jj),~,stats(jj)] = anova1(pac,[],'off');
-%     co = multcompare(stats(jj),'display','off');
-%     C{jj}=co;
-% end
-% Portion =  p<0.01; % where is most effected
-
-%% Optic Tract
-% FA
-% figure; hold on;
-mrvNewGraphWin; hold on;
-X = 1:100;
-c = lines(100);
-
-% bars where is significant difference between two groups
-% p<0.05
-bar(1:100,h,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
-% p,0.01
-% bar(1:100,p,1,'EdgeColor','none','facecolor',[0.6 0.6 0.6])
-
-% Control
-st = nanstd(ValCtl,1);
-m   = nanmean(ValCtl);
-
-% render control subjects range
-A3 = area(m+2*st);
-A1 = area(m+st);
-A2 = area(m-st);
-A4 = area(m-2*st);
-
-% set color and style
-set(A1,'FaceColor',[0.6 0.6 0.6],'linestyle','none')
-set(A2,'FaceColor',[0.8 0.8 0.8],'linestyle','none')
-set(A3,'FaceColor',[0.8 0.8 0.8],'linestyle','none')
-set(A4,'FaceColor',[1 1 1],'linestyle','none')
-
-plot(m,'color',[0 0 0], 'linewidth',3 )
-
-% % add individual FA plot
-% for k = CRD %1:length(subDir)
-%     plot(X,ValRP(k,:),'Color',c(3,:),'linewidth',1);
-% end
-% m   = nanmean(fa(CRD,:));
-% plot(X,m,'Color',c(3,:) ,'linewidth',3)
-
-
-% add individual
-for k =1:length(RP) %1:length(subDir)
-    plot(X,ValRP(k,:),'--','Color',c(5,:),'linewidth',1);
-end
-% plot mean value
-m   = nanmean(ValRP);
-plot(X,m,'Color',c(5,:) ,'linewidth',3)
-
-% add label
-xlabel('Location','fontSize',14);
-ylabel(upper(property),'fontSize',14);
-title('Optic tract','fontSize',14)
-
-% adjustment
-set(gca,'xlim',[10,90],'ylim',[0 0.6], 'xtick',[],'ytick',[0:0.3:0.6],...
-    'xtick',[10 90],'xtickLabel',{'OC','LGN'},...
-    'tickDir','out','tickLength', [0.01    0.02])
+    
+    switch property
+        case {'fa','FA'}
+            ValCtl =  fa(Ctl,:);
+            ValRP =  fa(RP,:);
+        case {'md','MD'}
+            ValCtl =  md(Ctl,:);
+            ValRP =  md(RP,:);
+        case {'ad','AD'}
+            ValCtl =  ad(Ctl,:);
+            ValRP =  ad(RP,:);
+        case {'rd','RD'}
+            ValCtl =  rd(Ctl,:);
+            ValRP =  rd(RP,:);
+    end
+    
+    %% Wilcoxon
+    for ii = 1:length(ValRP);
+        [p(ii),h(ii)] = ranksum(ValCtl(:,ii),ValRP(:,ii));
+    end
+    
+    % %% ANOVA
+    %
+    % for jj= 1: 100
+    %     pac = nan(14,3);
+    %     pac(:,1)= ValCtl(:,jj);
+    %     pac(1:length(RP),2)= ValRP(:,jj);
+    %     pac(1:length(CRD),3)= CRD_fa(:,jj);
+    %     [p(jj),~,stats(jj)] = anova1(pac,[],'off');
+    %     co = multcompare(stats(jj),'display','off');
+    %     C{jj}=co;
+    % end
+    % Portion =  p<0.01; % where is most effected
+    
+    %% Optic Tract
+    % FA
+    % figure; hold on;
+    mrvNewGraphWin; hold on;
+    X = 1:100;
+    c = lines(100);
+    
+    % bars where is significant difference between two groups
+    % p<0.05
+    bar(1:100,h,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
+    % p,0.01
+    % bar(1:100,p,1,'EdgeColor','none','facecolor',[0.6 0.6 0.6])
+    
+    % Control
+    st = nanstd(ValCtl,1);
+    m   = nanmean(ValCtl);
+    
+    % render control subjects range
+    A3 = area(m+2*st);
+    A1 = area(m+st);
+    A2 = area(m-st);
+    A4 = area(m-2*st);
+    
+    % set color and style
+    set(A1,'FaceColor',[0.6 0.6 0.6],'linestyle','none')
+    set(A2,'FaceColor',[0.8 0.8 0.8],'linestyle','none')
+    set(A3,'FaceColor',[0.8 0.8 0.8],'linestyle','none')
+    set(A4,'FaceColor',[1 1 1],'linestyle','none')
+    
+    plot(m,'color',[0 0 0], 'linewidth',3 )
+    
+    % % add individual FA plot
+    % for k = CRD %1:length(subDir)
+    %     plot(X,ValRP(k,:),'Color',c(3,:),'linewidth',1);
+    % end
+    % m   = nanmean(fa(CRD,:));
+    % plot(X,m,'Color',c(3,:) ,'linewidth',3)
+    
+    
+    % add individual
+    for k =1:length(RP) %1:length(subDir)
+        plot(X,ValRP(k,:),'--','Color',c(5,:),'linewidth',1);
+    end
+    % plot mean value
+    m   = nanmean(ValRP);
+    plot(X,m,'Color',c(5,:) ,'linewidth',3)
+    
+    % add label
+    xlabel('Location','fontSize',14);
+    ylabel(upper(property),'fontSize',14);
+    title('Optic tract','fontSize',14)
+    
+    % adjustment
+    set(gca,'xlim',[10,90],'ylim',[0 0.6], 'xtick',[],'ytick',[0:0.3:0.6],...
+        'xtick',[10 90],'xtickLabel',{'OC','LGN'},...
+        'tickDir','out','tickLength', [0.01    0.02])
 end
 
 return
