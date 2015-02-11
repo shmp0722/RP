@@ -115,10 +115,13 @@ afq.params.run_mode = 'mrtrix';
 %% Run AFQ on these subjects
 afq = AFQ_run(sub_dirs, sub_group, afq);
 
-%% 
+%% load afq structure
 load '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal';
 
-
+%% clip2rois was 'true', so it is needed to be '0'
+afq.params.clip2rois   = 0;
+afq.params.cleanFibers = 0;
+afq.params.outname = 'afq_8RP_25Normal_02112015.mat';
 %% Add OT and OR
 
 % Fg = {'LOTD3L2_1206.pdb','LOTD4L4_1206.pdb','LOR1206_D4L4.pdb','ROTD3L2_1206.pdb','ROTD4L4_1206.pdb','ROR1206_D4L4.pdb'};
@@ -157,7 +160,7 @@ roi2Name = 'rh_V1_smooth3mm_NOT.mat';
 afq = SO_AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1,0,[],0);
 
 %% save afq
-save '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal_02102015.mat'
+save '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal_02112015.mat'
 
 %% render resuts
 % See RP_RP_plot_24C
