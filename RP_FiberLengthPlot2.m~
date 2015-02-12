@@ -82,7 +82,7 @@ for ii =1:length(Diffusion)
                 ValRP =  md(RP,:);
                 
                 XLIM  = [10,90];
-                YLIM  = [0.5 1.1];
+                YLIM  = [0.6 1.1];
                 XTICK = XLIM;
                 YTICK = YLIM;
                 XTICKLabel = {'LGN','V1'};
@@ -92,7 +92,7 @@ for ii =1:length(Diffusion)
                 ValRP =  ad(RP,:);
                 
                 XLIM  = [10,90];
-                YLIM  = [1 1.8];
+                YLIM  = [1 1.7];
                 XTICK = XLIM;
                 YTICK = YLIM;
                 XTICKLabel = {'LGN','V1'};
@@ -101,25 +101,15 @@ for ii =1:length(Diffusion)
                 ValRP =  rd(RP,:);
                 
                 XLIM  = [10,90];
-                YLIM  = [0.3 0.9];
+                YLIM  = [0.3 0.8];
                 XTICK = XLIM;
                 YTICK = YLIM;
                 XTICKLabel = {'LGN','V1'};
         end
         
         
-        % stats Wilcoxson 
-        for kk = 1:length(ValRP);
-            [p(kk),h(kk)] = ranksum(ValCtl(:,kk),ValRP(:,kk),'alpha',0.01);
-            [P(kk),H(kk)] = ranksum(ValCtl(:,kk),ValRP(:,kk),'alpha',0.05);
-        end        
-        
         %% plot
         subplot(2,3,pctl-1); hold on;
-        
-        % put bars based on wilcoxson (p<0.01, 0.05)
-        bar(H*5,1.0,'edgecolor','none','facecolor',[0.8 0.7 0.1])
-        bar(h*5,1.0,'edgecolor','none','facecolor',[0.5 0.7 0.3])
         
         %% Control
         st = nanstd(ValCtl,1);
@@ -168,9 +158,13 @@ for ii =1:length(Diffusion)
         axis('square')
         
         Percentile = {'0-20','20-40','40-60','60-80','80-100'};
-        title(sprintf('%s',Percentile{pctl-1}))
+        title(sprintf('%s %',Percentile{pctl-1}))
         hold off;
     end
-     saveas(gcf, sprintf('%s_FiberLength.png',property))
-     saveas(gcf, sprintf('%s_FiberLength.eps',property),'psc2')
+end
+
+% save the fig
+if save_fig,
+    saveas(gcf, sprintf('%s_FiberLength.png',property))
+    saveas(gcf, sprintf('%s_FiberLength.eps',property),'psc2')
 end

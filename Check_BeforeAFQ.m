@@ -163,4 +163,4 @@ afq = SO_AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1,0,[],0);
 save '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal_02112015.mat'
 
 %% render resuts
-% See RP_RP_plot_24C
+% See RP_RP_plot_24C_2

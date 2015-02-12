@@ -2,7 +2,7 @@ function RP_plot_24C_2
 
 %% load afq structure
 
-load '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal_02102015.mat'
+load '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal_02112015.mat'
 
 %% Argumenty check
 
@@ -301,8 +301,7 @@ subplot(2,2,1); hold on;
 X = 1:100;
 c = lines(100);
 
-% % put bars based on wilcoxson (p<0.01, 0.05)
-
+% put bars based on wilcoxson (p<0.01, 0.05)
 bar(H*5,1.0,'edgecolor','none','facecolor',[0.8 0.7 0.1])
 bar(h*5,1.0,'edgecolor','none','facecolor',[0.5 0.7 0.3])
 
