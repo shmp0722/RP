@@ -28,9 +28,10 @@ sprintf('** Render %s values of %s **',property ,afq.fgnames{jj})
 % Collect the property of interest and the relevant norms
 switch(property)
     case {'FA' 'fa' 'fractional anisotropy'}
-        vals     = afq.patient_data(jj).FA(ii,:)';
+        vals     = afq.patient_data(jj).FA(ii,:);
         val_mean = afq.norms.meanFA(:,jj);
         val_sd   = afq.norms.sdFA(:,jj);
+        ctl = afq.vals.fa{jj}(9:end,:);
         
         XLIM  = [10,90];
         YLIM  = [0 0.7];
@@ -38,27 +39,33 @@ switch(property)
         YTICK = YLIM;
         XTICKLabel = {'OC','LGN'};
     case {'MD' 'md' 'mean diffusivity'}
-        vals     = afq.patient_data(jj).MD(ii,:)';
+        vals     = afq.patient_data(jj).MD(ii,:);
         val_mean = afq.norms.meanMD(:,jj);
         val_sd   = afq.norms.sdMD(:,jj);
+        ctl = afq.vals.md{jj}(9:end,:);
+        
         XLIM  = [10,90];
         YLIM  = [0.6 1.8];
         XTICK = XLIM;
         YTICK = YLIM;
         XTICKLabel = {'OC','LGN'};
     case {'RD' 'rd' 'radial diffusivity'}
-        vals     = afq.patient_data(jj).RD(ii,:)';
+        vals     = afq.patient_data(jj).RD(ii,:);
         val_mean = afq.norms.meanRD(:,jj);
         val_sd   = afq.norms.sdRD(:,jj);
+        ctl = afq.vals.rd{jj}(9:end,:)';
+        
         XLIM  = [10,90];
         YLIM  = [0.4 1.6];
         XTICK = XLIM;
         YTICK = YLIM;
         XTICKLabel = {'OC','LGN'};
     case {'AD' 'ad' 'axial diffusivity'}
-        vals     = afq.patient_data(jj).AD(ii,:)';
+        vals     = afq.patient_data(jj).AD(ii,:);
         val_mean = afq.norms.meanAD(:,jj);
         val_sd   = afq.norms.sdAD(:,jj);
+        ctl = afq.vals.ad{jj}(9:end,:);
+        
         XLIM  = [10,90];
         YLIM  = [1 2.4];
         XTICK = XLIM;
@@ -68,17 +75,20 @@ end
 
 %% Stats
 
-
-
-
+for kk = 1:length(vals);
+        [p(kk),h(kk)] = ranksum(ctl(:,kk),vals(:,kk),'alpha',0.01);
+        [P(kk),H(kk)] = ranksum(ctl(:,kk),vals(:,kk),'alpha',0.05);
+end
 
 %% Optic Tract
 mrvNewGraphWin; hold on;
 X = 1:100;
 c = lines(100);
 
-% % put bars based on ANOVA (p<0.01)
-% bar(1:100,Portion,1.0)
+% % put bars based on wilcoxson (p<0.01, 0.05)
+
+bar(H*2,1.0,'edgecolor','none','facecolor',[0.8 0.7 0.1])
+bar(h*2,1.0,'edgecolor','none','facecolor',[0.5 0.7 0.3])
 
 % Control
 st = val_sd;
@@ -100,10 +110,10 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 
 % add individual
 for k = 1:size(afq.patient_data(1).FA,1)
-    plot(X,vals(:,k),'Color',c(5,:),'linewidth',1);
+    plot(X,vals(k,:),'Color',c(5,:),'linewidth',1);
 end
 % plot mean value
-m   = nanmean(vals,2);
+m   = nanmean(vals,1);
 plot(X,m,'Color',c(5,:) ,'linewidth',3)
 
 % add label
