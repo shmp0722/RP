@@ -5,9 +5,9 @@
 % Pick up subject
 
 Control = [Ctl,AMDC];
-subnumber = [RP,Control];
-%% Checking file existence
 
+%% Checking file existence
+subnumber = [RP,Control];
 for ii = 1:length(subnumber)
 
    current_subject  = fullfile(homeDir, subDir{subnumber(ii)});
@@ -78,7 +78,7 @@ for ii = 1:length(subnumber)
 end
 
 %% AFQ
-% load '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/AFQ_8RP_14Ctl_0820.mat'
+load '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/AFQ_8RP_14Ctl_0820.mat'
 
 sub_dirs = afq.sub_dirs;
 
