@@ -112,9 +112,9 @@ for v = 1:length(valname)
         fill(x,y1,[.4 .4 .4] ,'edgecolor',[0 0 0]);
         
         % Define the color of the point for the fiber group based on its zscore
-        tractcol = vals2colormap((vals_pm - m)./sd,cmap,crange);
+        tractcol{v,ii}.color = vals2colormap((vals_pm - m)./sd,cmap,crange);
         % Plot patient
-        plot(ii, vals_pm,'ko', 'markerfacecolor',tractcol);
+        plot(ii, vals_pm,'ko', 'markerfacecolor',tractcol{v,ii}.color);
         
     end
     
@@ -130,13 +130,57 @@ for v = 1:length(valname)
 end
 
 return
+%% Render 3d figure
 % Load the fiber group for the patient
-fg_p = AFQ_get(afq,'clean fg',1);
 
+s = 1; % subject
+fg_p = AFQ_get(afq,'clean fg',s);
 % Load up the b0 image for the patient
-dt_p = dtiLoadDt6(AFQ_get(afq,'dt6path',1));
+dt_p = dtiLoadDt6(AFQ_get(afq,'dt6path',s));
 b0_p = readFileNifti(dt_p.files.b0);
+t1w_p = niftiRead(dt_p.files.t1);
 
-%% Save an animated gif of the rotating fiber group
-AFQ_RotatingFgGif(fg_p,[],fullfile(outdir{s},'000_RotatingFibers.gif'),b0_p,[1 0 0]);
+% AFQ_RotatingFgGif(fg, colors, outfile, im, slice)
+% Make an animated gif of a rotating fiber group
+
+    colors = jet(length(fg_p)+4);
+    % Define the color of the point for the fiber group based on its zscore
+    v=1; % 'fa'
     
+% First we render the first fiber tract in a new figure window
+lightH = AFQ_RenderFibers(fg_p(1),'color',colors(1,:),'numfibers',50,'newfig',1);
+% lightH = AFQ_RenderFibers(fg_p(1),'color', tractcol{v,1}.color,'numfibers',50,'newfig',1);
+
+for ii = 2:length(fg_p)
+    % Next add the other fiber tracts to the same figure window
+    AFQ_RenderFibers(fg_p(ii),'color', colors(ii,:),'numfibers',50,'newfig',0);
+%     AFQ_RenderFibers(fg_p(ii),'color', tractcol{v,1}.color,'numfibers',50,'newfig',0);
+end
+
+% lets add OT and OR to the ima
+fg{1} = fgRead(afq.files.fibers.LOTD4L4_1206{s});
+fg{2} = fgRead(afq.files.fibers.ROTD4L4_1206{s});
+fg{3} = fgRead(afq.files.fibers.LOR1206_D4L4{s});
+fg{4} = fgRead(afq.files.fibers.ROR1206_D4L4{s});
+
+for ii = 1:4
+    AFQ_RenderFibers(fg{ii},'color',colors(length(fg_p)+ii,:),'numfibers',200,'newfig',0);
+end
+
+% Add an image if one was provided
+% AFQ_AddImageTo3dPlot(b0_p,[1 0 0]);
+AFQ_AddImageTo3dPlot(t1w_p,[1 0 0]);
+
+% AFQ_AddImageTo3dPlot(b0_p,[0 0 -5]);
+
+
+view([-48  18])
+view([0 90])
+
+% Delete the light object and put a new light to the right of the camera
+delete(lightH);
+lightH=camlight('headlight');
+% Turn of the axes
+axis('off');
+axis('image');
+axis('vis3d');

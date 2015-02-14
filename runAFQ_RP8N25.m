@@ -79,4 +79,7 @@ afq = SO_AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1,0,[],0);
 
 %% save
 
-save /sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP25Normal_02132015 afq
+save /sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP25Normal_02132015_4 afq
+
+%% 
+afq = AFQ_SegmentCallosum(afq);
