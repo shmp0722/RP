@@ -81,5 +81,14 @@ afq = SO_AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1,0,[],0);
 
 save /sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP25Normal_02132015_4 afq
 
-%% 
-afq = AFQ_SegmentCallosum(afq);
+%% Compute norms
+[norms, patient_data, control_data, afq] = AFQ_ComputeNorms(afq);
+
+% %%
+% cutoff   = 5;
+% property = 'fa';
+% comp     = 'profile';
+% 
+% [abn abnTracts] = AFQ_ComparePatientsToNorms(patient_data, norms, cutoff, property, comp);
+
+
