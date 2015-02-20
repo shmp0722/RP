@@ -1,9 +1,9 @@
-function afq = runAFQ_RP8N25
+function afq = runAFQ_Whole_RP8N25
 %% Checking if these subjects have OR and OT files
 
 [homeDir,subDir,JMD,CRD,LHON,Ctl,RP,AMDC] = Tama_subj2;
 
-%% Pick up subject
+% Pick up subject
 
 Control = [Ctl,AMDC];
 subnumber = [RP,Control];
@@ -31,15 +31,22 @@ afq = AFQ_set(afq,'outdir','/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa
 afq = AFQ_set(afq,'outname','afq_Whole_8RP_25Normal_02202015');
 afq.params.run_mode = 'mrtrix';
 
+%% load Callosal afq structure
+load(fullfile(afq.params.outdir,'afq_Callosal_8RP25Normal_02182015.mat'))
 
 %% Run AFQ on these subjects
 
 [afq patient_data control_data norms abn abnTracts] = AFQ_run(sub_dirs, sub_group, afq);
 
-
+afq = AFQ_set(afq,'outdir','/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP');
+% afq = AFQ_set(afq,'outname','afq_8RP_25Normal_02132015_2');
+afq = AFQ_set(afq,'outname','afq_Whole_8RP_25Normal_02202015');
+afq.params.run_mode = 'mrtrix';
+afq.params.maxDist = 4;
 %% Add OT and OR
 
 afq.params.clip2rois = 0;
+afq.params.cleanFibers = 0;
 afq.params.computenorms = 0;
 
 % Fg = {'LOTD3L2_1206.pdb','LOTD4L4_1206.pdb','LOR1206_D4L4.pdb','ROTD3L2_1206.pdb','ROTD4L4_1206.pdb','ROR1206_D4L4.pdb'};
