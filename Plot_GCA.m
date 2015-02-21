@@ -5,12 +5,6 @@ function Plot_GCA(save_fg)
 %
 % SO@Stanford Vista team 2015
 
-%% argument check
-
-if isempty(save_fg),
-    save_fg = 0;
-end
-
 %% Load patients' GCA 
 % if you are air
 % cd /Users/shumpei/Google Drive/RP
@@ -143,7 +137,7 @@ title('GCIPL thinckness','fontsize',14);
 set(gca, 'tickdir','out','box','off')
 
 % save
-if save_fg
+if save_fg,
 saveas(gcf,'B_mac_oct.png')
 saveas(gcf,'B_mac_oct.eps','psc2')
 end

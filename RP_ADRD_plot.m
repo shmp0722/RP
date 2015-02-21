@@ -12,8 +12,13 @@ function RP_ADRD_plot
 [~,subDir,~,CRD,~,Ctl,RP] = Tama_subj2;
 
 %% Load TractProfile data
+
 TPdata = fullfile('/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/results/Tama2_TP_SD.mat');
-load(TPdata)
+if exist(TPdata)
+    load(TPdata)
+else
+    load '/Users/shumpei/Google Drive/RP/Tama2_TP_SD.mat'
+end
 
 %% Figure 6
 % take values from TractProfile structure
@@ -51,13 +56,34 @@ for subID = 1:length(TractProfile);
     end;
 end
 
-%% Optic tracrt
+%% Wilcoxon
+
+ValCtl = ad(Ctl,:);
+ValRP  = ad(RP,:);
+% Wilcoxon
+for ii = 1:length(ValRP);
+    [p(ii),h(ii)] = ranksum(ValCtl(:,ii),ValRP(:,ii),'alpha',0.05);
+end
+
+%% Optic Tract
+% FA
+% figure; hold on;
+mrvNewGraphWin;
+subplot(2,2,1);hold on;
+X = 1:100;
+c = lines(100);
+
+% bars where is significant difference between two groups
+% p<0.05
+bar(1:100,h*5,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
+
+
+% Optic tracrt
 X = 1:100;      % noumber of nodes
 c = lines(100); % line colors
 
 % AD
-mrvNewGraphWin; 
-subplot(2,2,1);hold on;
+
 % bar(1:100,Portion.*3,1.0)
 
 % Control
@@ -78,16 +104,7 @@ set(A4,'FaceColor',[1 1 1],'linestyle','none')
 % add avarage
 plot(m,'color',[0 0 0], 'linewidth',3 )
 
-% % add individual FA plot
-% for k = CRD %1:length(subDir)
-%     plot(X,ad(k,:),'Color',c(3,:),...
-%         'linewidth',1);
-% end
-% m   = nanmean(ad(CRD,:));
-% plot(X,m,'Color',c(3,:) ,'linewidth',3)
-
-
-% add individual 
+% add individual
 for k = RP %1:length(subDir)
     plot(X,ad(k,:),'Color',c(5,:),'linewidth',1);
 end
@@ -104,26 +121,21 @@ ylabel('Axial diffusivity','fontName','Times','fontSize',14);
 title('Optic tract','fontName','Times','fontSize',14);
 % axis([10, 90 ,0.799999, 2.400001])
 
-%% RD  ANOVA
-%     Ctl_rd  =  rd(Ctl,:);
-%     RP_rd =  rd(RP,:);
-%     CRD_rd  =  rd(CRD,:);
-%     
-%     for jj= 1: 100
-%         pac = nan(14,3);
-%         pac(:,1)= Ctl_rd(:,jj);
-%         pac(1:6,2)= RP_rd(:,jj);
-%         pac(1:5,3)= CRD_rd(:,jj);
-%         [p(jj),~,stats(jj)] = anova1(pac,[],'off');
-%         co = multcompare(stats(jj),'display','off');
-%         C{jj}=co;
-%     end
-%     
-%     Portion =  p<0.01;
-
 %% RD
 subplot(2,2,2); hold on;
-% bar(1:100,Portion.*2.5, 1.0)
+
+% Wilcoxon
+
+ValCtl = rd(Ctl,:);
+ValRP  = rd(RP,:);
+% Wilcoxon
+for ii = 1:length(ValRP);
+    [p(ii),h(ii)] = ranksum(ValCtl(:,ii),ValRP(:,ii),'alpha',0.05);
+end
+
+% bars where is significant difference between two groups
+% p<0.05
+bar(1:100,h*5,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
 
 % Control
 st = nanstd(rd(Ctl,:),1);
@@ -151,7 +163,7 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 % plot(X,m,'Color',c(3,:) ,'linewidth',3)
 
 
-% rdd individual 
+% rdd individual
 for k = RP %1:length(subDir)
     plot(X,rd(k,:),'Color',c(5,:),'linewidth',1);
 end
@@ -198,27 +210,21 @@ for subID = 1:length(TractProfile);
     end;
 end
 
-%% AD ANOVA
-%     Ctl_ad  =  ad(Ctl,:);
-%     RP_ad =  ad(RP,:);
-%     CRD_ad  =  ad(CRD,:);
-%     
-%     for jj= 1: 100
-%         pac = nan(14,3);
-%         pac(:,1)= Ctl_ad(:,jj);
-%         pac(1:6,2)= RP_ad(:,jj);
-%         pac(1:5,3)= CRD_ad(:,jj);
-%         [p(jj),~,stats(jj)] = anova1(pac,[],'off');
-%         co = multcompare(stats(jj),'display','off');
-%         C{jj}=co;
-%     end
-%     
-%     Portion =  p<0.01;
 
 %% OR
 subplot(2,2,3); hold on;
-% bar(1:100,Portion*2,1)
+% Wilcoxon
 
+ValCtl = ad(Ctl,:);
+ValRP  = ad(RP,:);
+% Wilcoxon
+for ii = 1:length(ValRP);
+    [p(ii),h(ii)] = ranksum(ValCtl(:,ii),ValRP(:,ii),'alpha',0.05);
+end
+
+% bars where is significant difference between two groups
+% p<0.05
+bar(1:100,h*5,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
 % Control
 st = nanstd(ad(Ctl,:),1);
 m   = nanmean(ad(Ctl,:));
@@ -244,7 +250,7 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 % m   = nanmean(ad(CRD,:));
 % plot(X,m,'Color',c(3,:) ,'linewidth',2)
 
-% add individual 
+% add individual
 for k = RP %1:length(subDir)
     plot(X,ad(k,:),'Color',c(5,:),'linewidth',1);
 end
@@ -260,26 +266,22 @@ title('Optic radiation','fontName','Times','fontSize',14);
 
 set(gca,'ylim', [0.9 1.7],'ytick',[0.9 1.7],'xlim',[10 90],'xtick',[10 90],...
     'xtickLabel',{'OC','LGN'},'tickDir','out')
-%% RD  ANOVA
-%     Ctl_rd  =  rd(Ctl,:);
-%     RP_rd =  rd(RP,:);
-%     CRD_rd  =  rd(CRD,:);
-%     
-%     for jj= 1: 100
-%         pac = nan(14,3);
-%         pac(:,1)= Ctl_rd(:,jj);
-%         pac(1:6,2)= RP_rd(:,jj);
-%         pac(1:5,3)= CRD_rd(:,jj);
-%         [p(jj),~,stats(jj)] = anova1(pac,[],'off');
-%         co = multcompare(stats(jj),'display','off');
-%         C{jj}=co;
-%     end
-%     
-%     Portion =  p<0.01;
 
 %% RD
 subplot(2,2,4); hold on;
-% bar(1:100,Portion.*2.5, 1.0)
+
+% Wilcoxon
+
+ValCtl = rd(Ctl,:);
+ValRP  = rd(RP,:);
+% Wilcoxon
+for ii = 1:length(ValRP);
+    [p(ii),h(ii)] = ranksum(ValCtl(:,ii),ValRP(:,ii),'alpha',0.05);
+end
+
+% bars where is significant difference between two groups
+% p<0.05
+bar(1:100,h*5,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
 
 % Control
 st = nanstd(rd(Ctl,:),1);
@@ -308,7 +310,7 @@ plot(m,'color',[0 0 0], 'linewidth',3 )
 % plot(X,m,'Color',c(3,:) ,'linewidth',3)
 
 
-% rdd individual 
+% rdd individual
 for k = RP %1:length(subDir)
     plot(X,rd(k,:),'Color',c(5,:),'linewidth',1);
 end

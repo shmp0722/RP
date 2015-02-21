@@ -16,11 +16,11 @@ function RP_DiffsivityPlot
 
 %% Load TractProfile data
 TPdata = fullfile('/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/results/Tama2_TP_SD.mat');
-% if you use local machine,
-% load '/Users/shumpei/Google Drive/RP/Tama2_TP_SD.mat'
-load(TPdata)
+if ~exist(TPdata)
+    load '/Users/shumpei/Google Drive/RP/Tama2_TP_SD.mat'
+end
 
-%% Figure 
+%% Figure
 % indivisual FA value along optic tract
 
 % take values
@@ -73,19 +73,19 @@ for jj= 1: 100
     co = multcompare(stats(jj),'display','off');
     C{jj}=co;
 end
-Portion =  p<0.01; % where is most effected
-
+% % Portion =  p<0.01; % where is most effected
+% Portion(p(p<=0.01));
 %% t-test
 
 
 %% Optic Tract
-% FA   
+% FA
 figure; hold on;
 X = 1:100;
 c = lines(100);
 
 % put bars based on ANOVA (p<0.01)
-bar(1:100,Portion,1.0)
+bar(p(p<0.01)*500000,1.0)
 
 % Control
 st = nanstd(fa(Ctl,:),1);
@@ -158,7 +158,7 @@ m   = nanmean(ad(CRD,:));
 plot(X,m,'Color',c(3,:) ,'linewidth',3)
 
 
-% add individual 
+% add individual
 for k = RP %1:length(subDir)
     plot(X,ad(k,:),'Color',c(1,:),'linewidth',1);
 end
@@ -202,7 +202,7 @@ m   = nanmean(rd(CRD,:));
 plot(X,m,'Color',c(3,:) ,'linewidth',3)
 
 
-% rdd individual 
+% rdd individual
 for k = RP %1:length(subDir)
     plot(X,rd(k,:),'Color',c(1,:),'linewidth',1);
 end
@@ -346,7 +346,7 @@ m   = nanmean(ad(CRD,:));
 plot(X,m,'Color',c(3,:) ,'linewidth',3)
 
 
-% add individual 
+% add individual
 for k = RP %1:length(subDir)
     plot(X,ad(k,:),'Color',c(1,:),'linewidth',1);
 end
@@ -390,7 +390,7 @@ m   = nanmean(rd(CRD,:));
 plot(X,m,'Color',c(3,:) ,'linewidth',3)
 
 
-% rdd individual 
+% rdd individual
 for k = RP %1:length(subDir)
     plot(X,rd(k,:),'Color',c(1,:),'linewidth',1);
 end

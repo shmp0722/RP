@@ -16,11 +16,13 @@ function RP_FA_plot
 
 %% Load TractProfile data
 TPdata = fullfile('/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/results/Tama2_TP_SD.mat');
-load(TPdata)
 
-% If you are working at home and using your local maschine (MAC air)
+if exist(TPdata)
+    load(TPdata)
+else
+    load '/Users/shumpei/Google Drive/RP/Tama2_TP_SD.mat'
+end
 
-% load '/Users/shumpei/Google Drive/RP/Tama2_TP_SD.mat'
 
 %% Figure
 % indivisual FA value along optic tract
@@ -109,7 +111,7 @@ for ii =1:length(Diffusion)
     
     % bars where is significant difference between two groups
     % p<0.05
-    bar(1:100,h,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
+%     bar(1:100,h,1,'EdgeColor','none','facecolor',[0.8 0.7 0.3])
     % p,0.01
     % bar(1:100,p,1,'EdgeColor','none','facecolor',[0.6 0.6 0.6])
     

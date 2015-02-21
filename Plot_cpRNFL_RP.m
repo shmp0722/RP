@@ -4,12 +4,20 @@ function Plot_cpRNFL_RP(save_fig)
 % TamagawaPath('rp');
 %% Load OCT normal dstribution file
 % normal distribution
-cd /biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP
-load D.mat
-load M.mat
-
-% RP
-load RP_DiscOCT.mat
+DataDir = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP';
+if exist(DataDir), 
+    % normal data
+    load(fullfile(DataDir,D.mat));
+    load(fullfile(DataDir,M.mat));
+    % subjects data
+    load(fullfile(DataDir,RP_DiscOCT.mat));
+else
+    % normal data
+    load    /Users/shumpei/Documents/MATLAB/git/RP/D.mat
+    load    /Users/shumpei/Documents/MATLAB/git/RP/M.mat
+    % subjects data
+    load    /Users/shumpei/Documents/MATLAB/git/RP/RP_DiscOCT.mat
+end
 
 %% Disc plot 
 % add normal distribution
@@ -100,7 +108,7 @@ plot(5, mean([RRNFLTemporal,LRNFLTemporal],2),'o','linewidth',2)
 
 % x axis
 set(gca,'xlim',[0,6],'xtick',[1:5])
-set(gca,'XTickLabel',{'L-ave','Nasal','Inf','Sup','Temp'},'tickdir','out', 'box','off')
+set(gca,'XTickLabel',{'Ave','Nasal','Inf','Sup','Temp'},'tickdir','out', 'box','off')
 
 % y axis
 set(gca,'ytick',[40:70:180],'ylim',[40,180])

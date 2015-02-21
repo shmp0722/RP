@@ -16,11 +16,12 @@ function RP_OT_plot(save_fig)
 
 %% Load TractProfile data
 TPdata = fullfile('/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/results/Tama2_TP_SD.mat');
-load(TPdata)
 
-% If you are working at home and using your local maschine (MAC air)
-
-% load '/Users/shumpei/Google Drive/RP/Tama2_TP_SD.mat'
+if exist(TPdata)
+    load(TPdata)
+else
+    load '/Users/shumpei/Google Drive/RP/Tama2_TP_SD.mat'
+end
 
 %% Figure
 % indivisual FA value along optic tract
