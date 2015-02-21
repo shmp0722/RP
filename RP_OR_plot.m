@@ -1,4 +1,4 @@
-function RP_OR_plot(save_fig)
+function RP_OR_plot
 % Plot figure 5 showing individual FA value along the core of OR and optic tract.
 %
 % Repository dependencies
@@ -7,8 +7,6 @@ function RP_OR_plot(save_fig)
 %    LHON2
 %
 % SO Vista lab, 2014
-%
-% Shumpei Ogawa 2014
 
 %% Identify the directories and subject types in the study
 % The full call can be
@@ -58,7 +56,7 @@ for subID = 1:length(TractProfile);
         ad(subID,:) = mean([ TractProfile{subID,fibID}{sdID}.vals.ad;...
             TractProfile{subID,fibID+1}{sdID}.vals.ad]);
     end;
-end
+end 
 
 %% switch based on property
 Diffusion = {'fa','md','ad','rd'};
@@ -114,7 +112,6 @@ for ii =1:length(Diffusion)
     end
     
     
-    %
     mrvNewGraphWin; hold on;
     X = 1:100;
     c = lines(100);
@@ -173,11 +170,12 @@ for ii =1:length(Diffusion)
     %     set(lh,'box','off')
     %     L = get(lh);
     hold off;
-    % save
-    if save_fig,
-        saveas(gcf,sprintf('OR_%s.png',upper(property)))
-        saveas(gcf,sprintf('OR_%s.eps',upper(property)),'psc2')
-    end
+   
 end
 
-end
+%  % save
+%     if save_fig,
+%         saveas(gcf,sprintf('OR_%s.png',upper(property)))
+%         saveas(gcf,sprintf('OR_%s.eps',upper(property)),'psc2')
+%     end
+
