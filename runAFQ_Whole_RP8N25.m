@@ -34,15 +34,16 @@ afq.params.run_mode = 'mrtrix';
 %% load Callosal afq structure
 load(fullfile(afq.params.outdir,'afq_Callosal_8RP25Normal_02182015.mat'))
 
-%% Run AFQ on these subjects
-
-[afq patient_data control_data norms abn abnTracts] = AFQ_run(sub_dirs, sub_group, afq);
-
 afq = AFQ_set(afq,'outdir','/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP');
 % afq = AFQ_set(afq,'outname','afq_8RP_25Normal_02132015_2');
 afq = AFQ_set(afq,'outname','afq_Whole_8RP_25Normal_02202015');
 afq.params.run_mode = 'mrtrix';
 afq.params.maxDist = 4;
+%% Run AFQ on these subjects
+
+[afq patient_data control_data norms abn abnTracts] = AFQ_run(sub_dirs, sub_group, afq);
+
+
 %% Add OT and OR
 
 afq.params.clip2rois = 0;
