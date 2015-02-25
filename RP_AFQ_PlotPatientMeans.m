@@ -15,7 +15,7 @@ function RP_AFQ_PlotPatientMeans
 
 %% load afq
 
-load /sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP_25Normal_02132015_3.mat
+load /sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_Whole_8RP_25Normal_02202015_OTOR.mat
 
 
 % Which nodes to analyze
@@ -48,8 +48,8 @@ for v = 1:length(valname)
     end
 end
 % Get number of fiber groups and their names
-% nfg = AFQ_get(afq,'nfg');
-nfg = 20;
+nfg = AFQ_get(afq,'nfg');
+% nfg = 20;
 
 fgNames = AFQ_get(afq,'fgnames');
 
@@ -86,7 +86,7 @@ for v = 1:length(valname)
     cVals = AFQ_get(afq,'control data');
     
     % Loop over each fiber group
-    for ii = 1:20 %nfg
+    for ii = 1:length(fgNames) %nfg
         % Get the values for the patient and compute the mean
         vals_p = pVals(ii).(upper(valname{v}));
         
@@ -123,7 +123,9 @@ for v = 1:length(valname)
         'CFMi','l-IFOF','r-IFOF','l-ILF','r-ILF','l-SLF','r-SLF','l-U','r-U',...
         'l-A','r-A'}; 
     
-    set(gca,'xtick',1:nfg,'xticklabel',newfgNames,'xlim',[0 nfg+1],'fontname','times','fontsize',11);
+%     set(gca,'xtick',1:nfg,'xticklabel',newfgNames,'xlim',[0 nfg+1],'fontname','times','fontsize',11);
+    set(gca,'xtick',1:nfg,'xticklabel',fgNames,'xlim',[0 nfg+1],'fontname','times','fontsize',11);
+
     rotateXLabels(gca,90);
     ylabel(upper(valtitle{v}));
    

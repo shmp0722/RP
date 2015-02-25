@@ -48,7 +48,9 @@ afq.params.maxDist = 4;
 
 afq.params.clip2rois = 0;
 afq.params.cleanFibers = 0;
-afq.params.computenorms = 0;
+afq.params.computenorms = 1;
+afq.params.outname = 'afq_Whole_8RP_25Normal_02202015_OTOR';
+
 
 % Fg = {'LOTD3L2_1206.pdb','LOTD4L4_1206.pdb','LOR1206_D4L4.pdb','ROTD3L2_1206.pdb','ROTD4L4_1206.pdb','ROR1206_D4L4.pdb'};
 Fg = {'LOTD4L4_1206.pdb','ROTD4L4_1206.pdb','LOR1206_D4L4.pdb','ROR1206_D4L4.pdb'};
@@ -88,10 +90,10 @@ afq = SO_AFQ_AddNewFiberGroup(afq, fgName, roi1Name, roi2Name, 0, 1,0,[],0);
 
 %% save
 
-save /sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP25Normal_02132015_4 afq
-
-%% Compute norms
-[norms, patient_data, control_data, afq] = AFQ_ComputeNorms(afq);
+% save /sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP/afq_8RP25Normal_02132015_4 afq
+% 
+% %% Compute norms
+% [norms, patient_data, control_data, afq] = AFQ_ComputeNorms(afq);
 
 % %%
 % cutoff   = 5;

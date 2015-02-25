@@ -68,9 +68,7 @@ for ii = subNums
     % add b=0 image
     dt6 = dtiLoadDt6(AFQ_get(afq,'dt6path',ii));
     b0 = niftiRead( dt6.files.b0);
-    AFQ_AddImageTo3dPlot(b0,[1 0 0 ])
+    AFQ_AddImageTo3dPlot(b0,[]
     
-    
-    axis off    
     title(sprintf('Subject #%d',ii));
 end
