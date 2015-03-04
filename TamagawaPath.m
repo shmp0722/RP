@@ -16,27 +16,29 @@ end
 %% Where is your destination?
 switch option
     case {1}
-        Path = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan';
+        Path = '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan';
     case {2}
-        Path = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2';
+        Path = '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2';
     case {3}
-        Path = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan3';
+        Path = '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan3';
     case {'subj','subject','subjectname'}
-        Path = '/biac4/wandell/biac2/wandell/data/DWI-Tama-subjects';
+        Path = '/sni-storage/wandell/biac2/wandell/data/DWI-Tama-subjects';
     case {'git'}
         Path = '/home/shumpei/matlab/git';
     case {'freesurfer','fs'}
-        Path = '/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan/freesurfer';
+        Path = '/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan/freesurfer';
     case {'qmr','qmri','quantitative'}
         Path = '/peach/shumpei/qMRI';
     case {'mouse'}
-        Path = '/biac4/wandell/biac2/wandell/data/Ogawa_Mouse_DWI';
+        Path = '/sni-storage/wandell/biac2/wandell/data/Ogawa_Mouse_DWI';
     case {'life_demo'}
         Path = '/home/shumpei/Downloads/data';
     case {'netta'}
-        Path ='/biac4/wandell/biac3/wandell4/data/reading_longitude/dti_adults';
-    case {'RP','rp'}
-        Path ='/biac4/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP';
+        Path ='/sni-storage/wandell/biac3/wandell4/data/reading_longitude/dti_adults';
+    case {'rp'}
+        Path ='/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP';
+    case {'long','longi','longitudinal'}
+        Path = '/sni-storage/wandell/biac2/wandell/data/LHON_LongitudinalChange';
 end
 cd(Path)
 sprintf('You are here. "%s"',Path)
