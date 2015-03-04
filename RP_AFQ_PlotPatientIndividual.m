@@ -140,6 +140,17 @@ end
 return
 
 
+%% Render 3d Montage
+ 
+fgNames   = AFQ_get(afq,'fgnames');
+tube      = 0;
+fgColors  = [];
+subNums   = [];
+plotDims  = [];
+numfibers = 50;
+
+SO_AFQ_MakeFiberGroupMontage(afq, fgNames, tube , fgColors, subNums, plotDims, numfibers);
+
 %% Render 3d figure
 
 
