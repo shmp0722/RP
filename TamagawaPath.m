@@ -38,7 +38,7 @@ switch option
     case {'rp'}
         Path ='/sni-storage/wandell/biac2/wandell/data/DWI-Tamagawa-Japan2/RP';
     case {'long','longi','longitudinal'}
-        Path = '/sni-storage/wandell/biac2/wandell/data/LHON_LongitudinalChange';
+        Path = '/sni-storage/wandell/biac2/wandell/data/Longitudinal_LHON';
 end
 cd(Path)
 sprintf('You are here. "%s"',Path)
