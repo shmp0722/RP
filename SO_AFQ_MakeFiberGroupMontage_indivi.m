@@ -17,10 +17,7 @@ if ~exist('tube','var') || isempty(tube)
    tube = 0;
 end
 
-% By default render the fibers using hsv colors
-if ~exist('fgColors','var') || isempty(fgColors)
-    fgColors = hsv(length(fgNames)).*.8;
-end
+
 % % By default render fibers in a 3x3 subplot window
 % if ~exist('plotDims','var') || isempty(plotDims)
 %     plotDims = [3 3];
@@ -30,6 +27,15 @@ if ~exist('numfibers','var') || isempty(numfibers)
     numfibers = 200;
 end
 
+if ~exist('fgNames','var') || isempty(fgNames)
+    fgNames = afq.fgnames;
+end
+
+
+% By default render the fibers using hsv colors
+if ~exist('fgColors','var') || isempty(fgColors)
+    fgColors = hsv(length(fgNames)).*.8;
+end
 % % Calculate the number of plots in a window
 % numplots = prod(plotDims);
 

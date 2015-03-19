@@ -113,11 +113,14 @@ end
 
 mrvNewGraphWin; hold on;
 % normal
-errorbar2(1:length(Nmean),Nmean,Nsd*2,1,'color',[0.9 0.9 0.9],...
+a =  errorbar2(1:length(Nmean),Nmean,Nsd*2,1,'color',[0.9 0.9 0.9],...
     'linewidth',10);
 
-errorbar2(1:length(Nmean),Nmean,Nsd,1,'color',[0.8 0.80 0.8],...
+b = errorbar2(1:length(Nmean),Nmean,Nsd,1,'color',[0.8 0.80 0.8],...
     'linewidth',10);
+% l = legend('1sd','2sd')
+% L = get(l);
+
 % make the fig up
 xlim([0, 9]);
 h = gca;
@@ -134,8 +137,9 @@ end
 
 % add title
 title('GCIPL thinckness','fontsize',14);
-set(gca, 'tickdir','out','box','off')
-
+set(gca,'ytick',[10,110], 'tickdir','out','box','off')
+% legend('2SD','1SD')
+% legend('boxoff')
 % save
 if save_fg,
 saveas(gcf,'B_mac_oct.png')
